@@ -4,7 +4,7 @@ using Schulcast.Server.Models;
 
 namespace Schulcast.Server.Helpers
 {
-	public static class ExtensionMethods
+	public static class MemberExtensions
 	{
 		public static Member WithoutPassword(this Member user)
 		{
@@ -20,6 +20,11 @@ namespace Schulcast.Server.Helpers
 			return (users is not null)
 				? users.Select(x => x.WithoutPassword())
 				: null;
+		}
+
+		public static IEnumerable<Member> ExcludeSuperAdmin(this IEnumerable<Member> users)
+		{
+			return users.Where(user => user.Nickname != "admin");
 		}
 	}
 }

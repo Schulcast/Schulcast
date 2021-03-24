@@ -39,12 +39,12 @@ namespace Schulcast.Server
 				{
 					var tasks = new List<Task>() {
 						new Task () { Title = "Schnitt & Film" },
-							new Task () { Title = "Springer" },
-							new Task () { Title = "Website" },
-							new Task () { Title = "Social-Media" },
-							new Task () { Title = "Fotos, Filming & Ton" },
-							new Task () { Title = "Leitung" },
-							new Task () { Title = "Sonstiges" }
+						new Task () { Title = "Springer" },
+						new Task () { Title = "Website" },
+						new Task () { Title = "Social-Media" },
+						new Task () { Title = "Fotos, Filming & Ton" },
+						new Task () { Title = "Leitung" },
+						new Task () { Title = "Sonstiges" }
 					};
 
 					database.Tasks.AddRange(tasks);

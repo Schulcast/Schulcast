@@ -7,4 +7,4 @@ Schulcast APIs for managing
 - Member Data
 
 ## Build
- `dotnet run`
+`dotnet run`

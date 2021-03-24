@@ -34,7 +34,7 @@ namespace Schulcast.Server.Controllers
 				return BadRequest("Only JPG files are allowed");
 			}
 
-			if (formFile.Length <= 0 && formFile.Length > 1_000_000)
+			if (formFile.Length > 1_000_000)
 			{
 				return BadRequest("Only files smaller than 1MB are allowed");
 			}

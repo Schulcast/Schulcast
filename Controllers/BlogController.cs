@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Schulcast.Server.Data;
@@ -33,6 +34,7 @@ namespace Schulcast.Server.Controllers
 		[HttpPost]
 		public IActionResult Post([FromBody] Post post)
 		{
+			post.Published = DateTime.Now;
 			UnitOfWork.BlogRepository.Add(post);
 			UnitOfWork.CommitChanges();
 			return Ok(post);
@@ -41,11 +43,11 @@ namespace Schulcast.Server.Controllers
 		[HttpPut("{id}")]
 		public IActionResult Put([FromRoute] int id, [FromBody] Post post)
 		{
-			var AuthenticatedAccount = UnitOfWork.MemberRepository.Get(AuthenticatedAccountId);
+			var authenticatedAccount = UnitOfWork.MemberRepository.Get(AuthenticatedAccountId);
 
-			if (post.MemberId != AuthenticatedAccountId && AuthenticatedAccount.Role != MemberRoles.Admin)
+			if (post.MemberId != AuthenticatedAccountId && authenticatedAccount.Role != MemberRoles.Admin)
 			{
-				return Unauthorized();
+				return Forbid();
 			}
 
 			if (id != post.Id)

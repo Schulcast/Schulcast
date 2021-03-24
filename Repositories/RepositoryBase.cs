@@ -35,10 +35,10 @@ namespace Schulcast.Server.Repositories
 
 		public T Find(Expression<Func<T, bool>> predicate)
 		{
-			var foundEntity = EagerTable.SingleOrDefault(predicate);
-			if (foundEntity == null)
+			var entity = EagerTable.SingleOrDefault(predicate);
+			if (entity == null)
 				throw new EntityNotFoundException($"{typeof(T).Name.Remove(typeof(T).Name.IndexOf('`'))} was not found");
-			return foundEntity;
+			return entity;
 		}
 
 		public virtual IEnumerable<T> GetAll()

@@ -50,7 +50,7 @@ namespace Schulcast.Server.Controllers
 		[HttpGet, AllowAnonymous]
 		public IActionResult GetAll()
 		{
-			return Ok(UnitOfWork.MemberRepository.GetAll().WithoutPasswords());
+			return Ok(UnitOfWork.MemberRepository.GetAll().ExcludeSuperAdmin().WithoutPasswords());
 		}
 
 		[HttpGet("{id}"), AllowAnonymous]

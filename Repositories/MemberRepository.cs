@@ -1,10 +1,7 @@
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Schulcast.Server.Data;
 using Schulcast.Server.Exceptions;
-using Schulcast.Server.Helpers;
 using Schulcast.Server.Models;
 
 namespace Schulcast.Server.Repositories

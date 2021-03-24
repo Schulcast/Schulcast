@@ -1,5 +1,5 @@
 /uploads
-schulcast.db
+*.db
 
 /.vscode
 /.config
