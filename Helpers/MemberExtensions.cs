@@ -1,6 +1,6 @@
+using Schulcast.Server.Models;
 using System.Collections.Generic;
 using System.Linq;
-using Schulcast.Server.Models;
 
 namespace Schulcast.Server.Helpers
 {
@@ -9,7 +9,9 @@ namespace Schulcast.Server.Helpers
 		public static Member WithoutPassword(this Member user)
 		{
 			if (user is null)
+			{
 				return null;
+			}
 
 			user.Password = null;
 			return user;

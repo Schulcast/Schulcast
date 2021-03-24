@@ -1,10 +1,11 @@
-using System;
-using System.Security.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Schulcast.Server.Data;
 using Schulcast.Server.Helpers;
 using Schulcast.Server.Models;
+using System;
+using System.Security.Authentication;
+using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {
@@ -17,15 +18,21 @@ namespace Schulcast.Server.Controllers
 		public IActionResult Authenticate([FromQuery] string nickname, [FromQuery] string password)
 		{
 			if (nickname is null)
+			{
 				return BadRequest("The username is not provided");
+			}
 
 			if (password is null)
+			{
 				return BadRequest("The password is not provided");
+			}
 
 			var member = UnitOfWork.MemberRepository.GetByNickname(nickname);
 
 			if (member.Password.ToLower() != Sha256.GetHash(password).ToLower())
+			{
 				throw new AuthenticationException("Incorrect Password");
+			}
 
 			var token = Token.IssueAccountAccess(TimeSpan.FromDays(30), member);
 			return Ok(token);

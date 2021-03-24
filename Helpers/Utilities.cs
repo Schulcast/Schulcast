@@ -12,7 +12,7 @@ namespace Schulcast.Server.Helpers
 			var serializer = new XmlSerializer(objectInstance.GetType());
 			var sb = new StringBuilder();
 
-			using (TextWriter writer = new StringWriter(sb))
+			using (var writer = new StringWriter(sb))
 			{
 				serializer.Serialize(writer, objectInstance);
 			}

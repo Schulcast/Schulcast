@@ -1,3 +1,5 @@
+using Schulcast.Core.Models;
+
 namespace Schulcast.Server.Models
 {
 	public struct FileDirectories

@@ -1,8 +1,8 @@
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Schulcast.Server.Data;
 using Schulcast.Server.Exceptions;
 using Schulcast.Server.Models;
+using System.Linq;
 
 namespace Schulcast.Server.Repositories
 {
@@ -13,9 +13,7 @@ namespace Schulcast.Server.Repositories
 		public Member GetByNickname(string Nickname)
 		{
 			var member = database.Members.Include(m => m.Data).Include(m => m.Tasks).ThenInclude(t => t.Task).FirstOrDefault(m => m.Nickname == Nickname);
-			if (member is null)
-				throw new EntityNotFoundException("Member was not found");
-			return member;
+			return member is not null ? member : throw new EntityNotFoundException("Member was not found");
 		}
 	}
 }

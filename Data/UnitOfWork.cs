@@ -10,7 +10,7 @@ namespace Schulcast.Server.Data
 		public SlideRepository SlideRepository { get; private set; }
 		public TaskRepository TaskRepository { get; private set; }
 
-		private readonly DatabaseContext database;
+		readonly DatabaseContext database;
 		public UnitOfWork(DatabaseContext database)
 		{
 			this.database = database;
@@ -21,6 +21,9 @@ namespace Schulcast.Server.Data
 			TaskRepository = new TaskRepository(database);
 		}
 
-		public void CommitChanges() => database.SaveChanges();
+		public void CommitChanges()
+		{
+			database.SaveChanges();
+		}
 	}
 }

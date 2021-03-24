@@ -5,71 +5,71 @@ namespace Schulcast.Server.Models
 {
 	public class PageInfo
 	{
-		public int totalResults { get; set; }
-		public int resultsPerPage { get; set; }
+		public int TotalResults { get; set; }
+		public int ResultsPerPage { get; set; }
 	}
 
 	public class Id
 	{
-		public string kind { get; set; }
-		public string videoId { get; set; }
-		public string playlistId { get; set; }
-		public string channelId { get; set; }
+		public string Kind { get; set; }
+		public string VideoId { get; set; }
+		public string PlaylistId { get; set; }
+		public string ChannelId { get; set; }
 	}
 
 	public class Default
 	{
-		public string url { get; set; }
-		public int width { get; set; }
-		public int height { get; set; }
+		public string Url { get; set; }
+		public int Width { get; set; }
+		public int Height { get; set; }
 	}
 
 	public class Medium
 	{
-		public string url { get; set; }
-		public int width { get; set; }
-		public int height { get; set; }
+		public string Url { get; set; }
+		public int Width { get; set; }
+		public int Height { get; set; }
 	}
 
 	public class High
 	{
-		public string url { get; set; }
-		public int width { get; set; }
-		public int height { get; set; }
+		public string Url { get; set; }
+		public int Width { get; set; }
+		public int Height { get; set; }
 	}
 
 	public class Thumbnails
 	{
-		public Default @default { get; set; }
-		public Medium medium { get; set; }
-		public High high { get; set; }
+		public Default Default { get; set; }
+		public Medium Medium { get; set; }
+		public High High { get; set; }
 	}
 
 	public class Snippet
 	{
-		public DateTime publishedAt { get; set; }
-		public string channelId { get; set; }
-		public string title { get; set; }
-		public string description { get; set; }
-		public Thumbnails thumbnails { get; set; }
-		public string channelTitle { get; set; }
-		public string liveBroadcastContent { get; set; }
+		public DateTime PublishedAt { get; set; }
+		public string ChannelId { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+		public Thumbnails Thumbnails { get; set; }
+		public string ChannelTitle { get; set; }
+		public string LiveBroadcastContent { get; set; }
 	}
 
 	public class YoutubeItem
 	{
-		public string kind { get; set; }
-		public string etag { get; set; }
-		public Id id { get; set; }
-		public Snippet snippet { get; set; }
+		public string Kind { get; set; }
+		public string Etag { get; set; }
+		public Id Id { get; set; }
+		public Snippet Snippet { get; set; }
 	}
 
 	public class YoutubeResponse
 	{
-		public string kind { get; set; }
-		public string etag { get; set; }
-		public string regionCode { get; set; }
-		public PageInfo pageInfo { get; set; }
-		public List<YoutubeItem> items { get; set; }
+		public string Kind { get; set; }
+		public string Etag { get; set; }
+		public string RegionCode { get; set; }
+		public PageInfo PageInfo { get; set; }
+		public List<YoutubeItem> Items { get; set; }
 	}
 }

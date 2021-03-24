@@ -1,11 +1,12 @@
-using System;
-using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Schulcast.Server.Data;
 using Schulcast.Server.Models;
 using Schulcast.Server.Repositories;
+using System;
+using System.IO;
+using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {
@@ -23,7 +24,7 @@ namespace Schulcast.Server.Controllers
 		[HttpGet("{directory}"), AllowAnonymous]
 		public IActionResult Get([FromRoute] string directory)
 		{
-			return Ok(UnitOfWork.FileRepository.GetByFolder(FileDirectories.Slides));
+			return Ok(UnitOfWork.FileRepository.GetByFolder(directory));
 		}
 
 		[HttpPost("{directory}"), Authorize(Roles = MemberRoles.Admin)]
@@ -41,7 +42,7 @@ namespace Schulcast.Server.Controllers
 
 			var file = new Models.File
 			{
-				Path = $"{FileRepository.uploadDirectoryName}/{directory}/{Guid.NewGuid().ToString()}.jpg"
+				Path = $"{FileRepository.uploadDirectoryName}/{directory}/{Guid.NewGuid()}.jpg"
 			};
 
 			using (var stream = System.IO.File.Create(file.Path))

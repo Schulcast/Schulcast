@@ -1,3 +1,4 @@
+using Schulcast.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Schulcast.Server.Models

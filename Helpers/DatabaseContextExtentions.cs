@@ -1,6 +1,6 @@
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Schulcast.Server.Data;
+using System.Linq;
 
 namespace Schulcast.Server.Helpers
 {

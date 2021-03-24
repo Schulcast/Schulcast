@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Xml.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Schulcast.Server.Data;
 using Schulcast.Server.Helpers;
 using Schulcast.Server.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {
@@ -20,8 +20,8 @@ namespace Schulcast.Server.Controllers
 	[ApiController, Route("[controller]")]
 	public class FeedController : ControllerBase
 	{
-		private const string youtubeEndpoint = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDACSbBULNEdyDfEoTHt3_8VIeqCuSTaxI&channelId=UCtow4J8YJPGjppfiBnmHicQ&part=snippet,id&order=date&maxResults=20";
-		private const string podcastEndpoint = "http://podcast.schulcast.de/feed.php";
+		const string youtubeEndpoint = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDACSbBULNEdyDfEoTHt3_8VIeqCuSTaxI&channelId=UCtow4J8YJPGjppfiBnmHicQ&part=snippet,id&order=date&maxResults=20";
+		const string podcastEndpoint = "http://podcast.schulcast.de/feed.php";
 
 		public FeedController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
@@ -42,17 +42,17 @@ namespace Schulcast.Server.Controllers
 			var videosJson = Program.YoutubeStorage.json;
 
 			var videos = JsonConvert.DeserializeObject<YoutubeResponse>(videosJson);
-			foreach (var video in videos.items)
+			foreach (var video in videos.Items)
 			{
-				if (video.id.kind == "youtube#video")
+				if (video.Id.Kind == "youtube#video")
 				{
 					list.Add(new FeedItem()
 					{
-						Title = video.snippet.title,
-						ImageUrl = video.snippet.thumbnails.high.url,
-						Date = video.snippet.publishedAt,
+						Title = video.Snippet.Title,
+						ImageUrl = video.Snippet.Thumbnails.High.Url,
+						Date = video.Snippet.PublishedAt,
 						Type = FeedItemType.Video,
-						Link = $"https://www.youtube.com/watch?v={video.id.videoId}"
+						Link = $"https://www.youtube.com/watch?v={video.Id.VideoId}"
 					});
 				}
 			}

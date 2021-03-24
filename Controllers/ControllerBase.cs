@@ -1,13 +1,16 @@
-using System.Linq;
 using Schulcast.Server.Data;
+using System.Linq;
 
-public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
+namespace Schulcast.Core.Controllers
 {
-	public int AuthenticatedAccountId => User.Claims.Count() == 0 ? 0 : int.Parse(User.Claims.ElementAt(1).Value);
-
-	internal UnitOfWork UnitOfWork { get; }
-	public ControllerBase(UnitOfWork unitOfWork)
+	public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
 	{
-		UnitOfWork = unitOfWork;
+		public int AuthenticatedAccountId => !User.Claims.Any() ? 0 : int.Parse(User.Claims.ElementAt(1).Value);
+
+		internal UnitOfWork UnitOfWork { get; }
+		public ControllerBase(UnitOfWork unitOfWork)
+		{
+			UnitOfWork = unitOfWork;
+		}
 	}
 }

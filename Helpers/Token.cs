@@ -1,30 +1,23 @@
+using Microsoft.IdentityModel.Tokens;
+using Schulcast.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using Schulcast.Server.Models;
+using System.Linq;
 
 namespace Schulcast.Server.Helpers
 {
 	public static class Token
 	{
-		private static string Issue(TimeSpan expiration, ICollection<(string key, string value)> pairs)
+		static string Issue(TimeSpan expiration, ICollection<(string key, string value)> pairs)
 		{
-			List<Claim> claims = new List<Claim>() {
-				new Claim (JwtRegisteredClaimNames.Jti, Guid.NewGuid ().ToString("N")),
+			var claims = new List<Claim>() {
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid ().ToString("N")),
 			};
-
-			foreach (var pair in pairs)
-			{
-				if (pair.value != null)
-				{
-					claims.Add(new Claim(pair.key, pair.value));
-				}
-			}
-
+			claims.AddRange(pairs.Where(pair => pair.value != null).Select(pair => new Claim(pair.key, pair.value)));
 			var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Program.Configuration["Jwt:SecretKey"])), SecurityAlgorithms.HmacSha256);
 			var token = new JwtSecurityToken(
 				issuer: Program.Configuration["Jwt:Issuer"],
@@ -55,8 +48,12 @@ namespace Schulcast.Server.Helpers
 		{
 			HashAlgorithm algorithm = SHA256.Create();
 			var hashedArr = algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
-			StringBuilder sb = new StringBuilder();
-			foreach (byte b in hashedArr) sb.Append(b.ToString("X2"));
+			var sb = new StringBuilder();
+			foreach (var b in hashedArr)
+			{
+				_ = sb.Append(b.ToString("X2"));
+			}
+
 			return sb.ToString();
 		}
 	}

@@ -1,8 +1,8 @@
+using Schulcast.Server.Data;
+using Schulcast.Server.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Schulcast.Server.Data;
-using Schulcast.Server.Models;
 
 namespace Schulcast.Server.Repositories
 {
@@ -22,10 +22,6 @@ namespace Schulcast.Server.Repositories
 		public List<Models.File> GetByFolder(string folder)
 		{
 			return database.Files.Where(f => f.Path.Contains(folder)).ToList();
-		}
-
-		public void AddAndWrite() {
-			
 		}
 
 		public override void Delete(Models.File file)
