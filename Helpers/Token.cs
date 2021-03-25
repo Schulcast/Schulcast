@@ -51,7 +51,7 @@ namespace Schulcast.Server.Helpers
 			var sb = new StringBuilder();
 			foreach (var b in hashedArr)
 			{
-				_ = sb.Append(b.ToString("X2"));
+				sb.Append(b.ToString("X2"));
 			}
 
 			return sb.ToString();

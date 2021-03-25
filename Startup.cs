@@ -58,8 +58,6 @@ namespace Schulcast.Server
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			Program.YoutubeStorage = (null, DateTime.Now.AddYears(-1));
-
 			services.InstallSchulcast()
 				.AddControllers()
 				.AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

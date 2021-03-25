@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
@@ -20,72 +21,79 @@ namespace Schulcast.Server.Controllers
 	[ApiController, Route("[controller]")]
 	public class FeedController : ControllerBase
 	{
+		static (string Value, DateTime? Date) YoutubeCache { get; set; } = (null, DateTime.MinValue);
+		static (string Value, DateTime? Date) PodcastCache { get; set; } = (null, DateTime.MinValue);
+		static readonly TimeSpan cacheThreshold = TimeSpan.FromMinutes(15);
+
 		const string youtubeEndpoint = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDACSbBULNEdyDfEoTHt3_8VIeqCuSTaxI&channelId=UCtow4J8YJPGjppfiBnmHicQ&part=snippet,id&order=date&maxResults=20";
 		const string podcastEndpoint = "http://podcast.schulcast.de/feed.php";
+
+		static async Task<YoutubeResponse> FetchVideos()
+		{
+			if (DateTime.Now - YoutubeCache.Date > cacheThreshold)
+			{
+				YoutubeCache = (await new WebClient().DownloadStringTaskAsync(youtubeEndpoint), DateTime.Now);
+			}
+
+			return JsonConvert.DeserializeObject<YoutubeResponse>(YoutubeCache.Value);
+		}
+
+		static async Task<PodcastResponse> FetchPodcasts()
+		{
+			if (DateTime.Now - PodcastCache.Date > cacheThreshold)
+			{
+				PodcastCache = (await new WebClient().DownloadStringTaskAsync(podcastEndpoint), DateTime.Now);
+			}
+
+			return Utilities.XmlDeserializeFromString<PodcastResponse>(PodcastCache.Value);
+		}
 
 		public FeedController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
 		[HttpGet]
-		public IActionResult Get()
+		public async Task<IActionResult> Get()
 		{
-			var list = new List<FeedItem>();
-			var wc = new WebClient();
-			var database = new DatabaseContext();
+			// Start fetching videos and podcasts in parallel
+			var videosTask = FetchVideos();
+			var podcastsTask = FetchPodcasts();
 
-			var podcastsXml = wc.DownloadString(podcastEndpoint);
-
-			if (DateTime.Now - Program.YoutubeStorage.lastResponse > TimeSpan.FromMinutes(15))
-			{
-				Program.YoutubeStorage = (wc.DownloadString(youtubeEndpoint), DateTime.Now);
-			}
-
-			var videosJson = Program.YoutubeStorage.json;
-
-			var videos = JsonConvert.DeserializeObject<YoutubeResponse>(videosJson);
-			foreach (var video in videos.Items)
-			{
-				if (video.Id.Kind == "youtube#video")
-				{
-					list.Add(new FeedItem()
+			var results = new List<FeedItem>()
+				.Union((await videosTask).Items
+					.Where(video => video.Id.Kind == "youtube#video")
+					.Select(video => new FeedItem
 					{
 						Title = video.Snippet.Title,
 						ImageUrl = video.Snippet.Thumbnails.High.Url,
 						Date = video.Snippet.PublishedAt,
 						Type = FeedItemType.Video,
 						Link = $"https://www.youtube.com/watch?v={video.Id.VideoId}"
-					});
-				}
-			}
+					})
+				)
+				.Union((await podcastsTask).Channel.Item
+					.Select(episode => new FeedItem
+					{
+						Title = episode.Title,
+						ImageUrl = "http://podcast.schulcast.de/images/itunes_image.jpg",
+						Date = Convert.ToDateTime(episode.PubDate),
+						Type = FeedItemType.Podcast,
+						Link = episode.Enclosure.Url
+					})
+				)
+				.Union(UnitOfWork.BlogRepository
+					.GetAll()
+					.Select(post => new FeedItem
+					{
+						Title = post.Title,
+						ImageUrl = "",
+						Date = post.Published,
+						Type = FeedItemType.Article,
+						Link = $"blog/{post.Id}"
+					})
+				)
+				.OrderByDescending(p => p.Date)
+				.ToList();
 
-			var podcasts = Utilities.XmlDeserializeFromString<PodcastResponse>(podcastsXml);
-
-			foreach (var episode in podcasts.Channel.Item)
-			{
-				list.Add(new FeedItem()
-				{
-					Title = episode.Title,
-					ImageUrl = "http://podcast.schulcast.de/images/itunes_image.jpg",
-					Date = Convert.ToDateTime(episode.PubDate),
-					Type = FeedItemType.Podcast,
-					Link = episode.Enclosure.Url
-				});
-			}
-
-			foreach (var post in database.Posts)
-			{
-				list.Add(new FeedItem
-				{
-					Title = post.Title,
-					ImageUrl = "",
-					Date = post.Published,
-					Type = FeedItemType.Article,
-					Link = $"blog/{post.Id}"
-				});
-			}
-
-			list = list.OrderByDescending(p => p.Date).ToList();
-
-			return Ok(list);
+			return Ok(results);
 		}
 	}
 }
