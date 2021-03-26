@@ -11,6 +11,6 @@ namespace Schulcast.Server.Models
 
 	public class File : Model
 	{
-		public string Path { get; set; }
+		public string Path { get; set; } = null!;
 	}
 }

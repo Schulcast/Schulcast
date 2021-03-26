@@ -5,12 +5,12 @@ namespace Schulcast.Server.Data
 {
 	public class DatabaseContext : DbContext
 	{
-		public DbSet<Member> Members { get; set; }
-		public DbSet<Task> Tasks { get; set; }
-		public DbSet<MemberData> MemberData { get; set; }
-		public DbSet<Post> Posts { get; set; }
-		public DbSet<File> Files { get; set; }
-		public DbSet<Slide> Slides { get; set; }
+		public DbSet<Member> Members { get; set; } = null!;
+		public DbSet<Task> Tasks { get; set; } = null!;
+		public DbSet<MemberData> MemberData { get; set; } = null!;
+		public DbSet<Post> Posts { get; set; } = null!;
+		public DbSet<File> Files { get; set; } = null!;
+		public DbSet<Slide> Slides { get; set; } = null!;
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

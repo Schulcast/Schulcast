@@ -32,7 +32,7 @@ namespace Schulcast.Server.Helpers
 
 			using (TextReader reader = new StringReader(objectData))
 			{
-				result = serializer.Deserialize(reader);
+				result = serializer.Deserialize(reader)!;
 			}
 
 			return result;

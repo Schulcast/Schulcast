@@ -12,17 +12,11 @@ using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {
-	public class YoutubeApiStorage
-	{
-		public string LastResponse { get; set; }
-		public static DateTime LastResponseDate { get; set; }
-	}
-
 	[ApiController, Route("[controller]")]
 	public class FeedController : ControllerBase
 	{
-		static (string Value, DateTime? Date) YoutubeCache { get; set; } = (null, DateTime.MinValue);
-		static (string Value, DateTime? Date) PodcastCache { get; set; } = (null, DateTime.MinValue);
+		static (string? Value, DateTime? Date) YoutubeCache { get; set; } = (null, DateTime.MinValue);
+		static (string? Value, DateTime? Date) PodcastCache { get; set; } = (null, DateTime.MinValue);
 		static readonly TimeSpan cacheThreshold = TimeSpan.FromMinutes(15);
 
 		const string youtubeEndpoint = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDACSbBULNEdyDfEoTHt3_8VIeqCuSTaxI&channelId=UCtow4J8YJPGjppfiBnmHicQ&part=snippet,id&order=date&maxResults=20";
@@ -35,7 +29,7 @@ namespace Schulcast.Server.Controllers
 				YoutubeCache = (await new WebClient().DownloadStringTaskAsync(youtubeEndpoint), DateTime.Now);
 			}
 
-			return JsonConvert.DeserializeObject<YoutubeResponse>(YoutubeCache.Value);
+			return JsonConvert.DeserializeObject<YoutubeResponse>(YoutubeCache.Value!)!;
 		}
 
 		static async Task<PodcastResponse> FetchPodcasts()
@@ -45,7 +39,7 @@ namespace Schulcast.Server.Controllers
 				PodcastCache = (await new WebClient().DownloadStringTaskAsync(podcastEndpoint), DateTime.Now);
 			}
 
-			return Utilities.XmlDeserializeFromString<PodcastResponse>(PodcastCache.Value);
+			return Utilities.XmlDeserializeFromString<PodcastResponse>(PodcastCache.Value!);
 		}
 
 		public FeedController(UnitOfWork unitOfWork) : base(unitOfWork) { }

@@ -8,20 +8,13 @@ namespace Schulcast.Server.Helpers
 	{
 		public static Member WithoutPassword(this Member user)
 		{
-			if (user is null)
-			{
-				return null;
-			}
-
-			user.Password = null;
+			user.Password = null!;
 			return user;
 		}
 
 		public static IEnumerable<Member> WithoutPasswords(this IEnumerable<Member> users)
 		{
-			return (users is not null)
-				? users.Select(x => x.WithoutPassword())
-				: null;
+			return users.Select(x => x.WithoutPassword());
 		}
 
 		public static IEnumerable<Member> ExcludeSuperAdmin(this IEnumerable<Member> users)

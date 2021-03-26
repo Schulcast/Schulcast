@@ -7,8 +7,9 @@ namespace Schulcast.Server
 {
 	public class Program
 	{
-		public static IConfiguration Configuration { get; set; }
-		public static IWebHostEnvironment Environment { get; set; }
+		public static IConfiguration Configuration { get; set; } = null!;
+		public static IWebHostEnvironment Environment { get; set; } = null!;
+
 		public static void Main(string[] args)
 		{
 			CreateHostBuilder(args).Build().Run();

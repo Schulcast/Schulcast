@@ -7,7 +7,7 @@ namespace Schulcast.Server.Models
 	public class Task : Model
 	{
 		[Required, MaxLength(50)]
-		public string Title { get; set; }
-		public List<MemberTask> Members { get; set; }
+		public string Title { get; set; } = null!;
+		public List<MemberTask> Members { get; set; } = new();
 	}
 }

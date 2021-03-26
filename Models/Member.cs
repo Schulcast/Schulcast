@@ -11,18 +11,15 @@ namespace Schulcast.Server.Models
 	}
 	public class Member : Model
 	{
-		[Required]
+		[Required, MaxLength(50)]
+		public string Nickname { get; set; } = null!;
 		[MaxLength(50)]
-		public string Nickname { get; set; }
-
-		[MaxLength(50)]
-		public string Role { get; set; }
-
+		public string Role { get; set; } = null!;
 		[MaxLength(64)]
-		public string Password { get; set; }
+		public string? Password { get; set; }
 		public int ImageId { get; set; }
-		public List<MemberTask> Tasks { get; set; } = new List<MemberTask>();
-		public List<MemberData> Data { get; set; } = new List<MemberData>();
-		public List<Post> Posts { get; set; } = new List<Post>();
+		public List<MemberTask> Tasks { get; set; } = new();
+		public List<MemberData> Data { get; set; } = new();
+		public List<Post> Posts { get; set; } = new();
 	}
 }

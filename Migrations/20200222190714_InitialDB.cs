@@ -11,9 +11,7 @@ namespace Schulcast.Server.Migrations {
 						.Annotation ("Sqlite:Autoincrement", true),
 						Path = table.Column<string> (nullable: true)
 				},
-				constraints : table => {
-					table.PrimaryKey ("PK_Files", x => x.Id);
-				});
+				constraints : table => table.PrimaryKey("PK_Files", x => x.Id));
 
 			migrationBuilder.CreateTable (
 				name: "Members",
@@ -25,9 +23,7 @@ namespace Schulcast.Server.Migrations {
 						Password = table.Column<string> (maxLength: 64, nullable: true),
 						ImageId = table.Column<int> (nullable: false)
 				},
-				constraints : table => {
-					table.PrimaryKey ("PK_Members", x => x.Id);
-				});
+				constraints : table => table.PrimaryKey("PK_Members", x => x.Id));
 
 			migrationBuilder.CreateTable (
 				name: "Slides",
@@ -37,9 +33,7 @@ namespace Schulcast.Server.Migrations {
 						Description = table.Column<string> (maxLength: 200, nullable: false),
 						ImageId = table.Column<int> (nullable: false)
 				},
-				constraints : table => {
-					table.PrimaryKey ("PK_Slides", x => x.Id);
-				});
+				constraints : table => table.PrimaryKey("PK_Slides", x => x.Id));
 
 			migrationBuilder.CreateTable (
 				name: "Tasks",
@@ -48,9 +42,7 @@ namespace Schulcast.Server.Migrations {
 						.Annotation ("Sqlite:Autoincrement", true),
 						Title = table.Column<string> (maxLength: 50, nullable: false)
 				},
-				constraints : table => {
-					table.PrimaryKey ("PK_Tasks", x => x.Id);
-				});
+				constraints : table => table.PrimaryKey("PK_Tasks", x => x.Id));
 
 			migrationBuilder.CreateTable (
 				name: "MemberData",
