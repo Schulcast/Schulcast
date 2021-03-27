@@ -12,8 +12,7 @@ namespace Schulcast.Server.Repositories
 
 		public Member GetByNickname(string Nickname)
 		{
-			var member = database.Members.Include(m => m.Data).Include(m => m.Tasks).ThenInclude(t => t.Task).FirstOrDefault(m => m.Nickname == Nickname);
-			return member is not null ? member : throw new EntityNotFoundException("Member was not found");
+			return Find(m => m.Nickname == Nickname);
 		}
 	}
 }

@@ -56,6 +56,7 @@ namespace Schulcast.Server.Controllers
 				return BadRequest();
 			}
 
+			post.LastUpdated = DateTime.Now;
 			UnitOfWork.BlogRepository.Update(post);
 			UnitOfWork.CommitChanges();
 			return Ok(post);

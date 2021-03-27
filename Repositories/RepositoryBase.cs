@@ -13,8 +13,9 @@ namespace Schulcast.Server.Repositories
 	public abstract class RepositoryBase<T> : IRepository<T> where T : Model, new()
 	{
 		protected readonly DatabaseContext database;
-		protected IQueryable<T> EagerTable => database.Eager<T>();
 		protected DbSet<T> Table => database.Set<T>();
+		protected IQueryable<T> EagerTable => database.Eager<T>();
+
 		public RepositoryBase(DatabaseContext database)
 		{
 			this.database = database;
@@ -50,7 +51,7 @@ namespace Schulcast.Server.Repositories
 
 		public virtual T Get(int id)
 		{
-			var entity = Table.SingleOrDefault(e => e.Id == id);
+			var entity = Table.Find(id);
 			return entity ?? throw new EntityNotFoundException($"{typeof(T).Name.Remove(typeof(T).Name.IndexOf('`'))} was not found");
 		}
 
@@ -81,12 +82,17 @@ namespace Schulcast.Server.Repositories
 
 		public virtual void Update(T entity)
 		{
-			Table.Update(entity);
+			var foundEntity = Get(entity.Id);
+			database.Entry(foundEntity).CurrentValues.SetValues(entity);
 		}
 
 		public virtual void UpdateRange(IEnumerable<T> entities)
 		{
-			Table.UpdateRange(entities);
+			var foundEntities = FindAll(f => entities.Select(e => e.Id).Contains(f.Id));
+			foreach (var entity in foundEntities)
+			{
+				database.Entry(entity).CurrentValues.SetValues(entity);
+			}
 		}
 	}
 }

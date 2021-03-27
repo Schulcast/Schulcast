@@ -4,32 +4,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<Compile Remove="Migrations\20200205230955_InitialCreate.cs" />
-		<Compile Remove="Migrations\20200205230955_InitialCreate.Designer.cs" />
-		<Compile Remove="Migrations\20200208122250_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208122250_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208122409_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208122409_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208122516_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208122516_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208124932_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208124932_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208132023_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208132023_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208134909_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208134909_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208140650_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208140650_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208141445_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208141445_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208143527_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208143527_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208143920_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208143920_InitialDB.Designer.cs" />
-		<Compile Remove="Migrations\20200208144228_InitialDB.cs" />
-		<Compile Remove="Migrations\20200208144228_InitialDB.Designer.cs" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.4">

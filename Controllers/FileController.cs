@@ -21,12 +21,6 @@ namespace Schulcast.Server.Controllers
 			return File(System.IO.File.OpenRead(UnitOfWork.FileRepository.Get(id).Path), "image/jpeg");
 		}
 
-		[HttpGet("{directory}"), AllowAnonymous]
-		public IActionResult Get([FromRoute] string directory)
-		{
-			return Ok(UnitOfWork.FileRepository.GetByFolder(directory));
-		}
-
 		[HttpPost("{directory}"), Authorize(Roles = MemberRoles.Admin)]
 		public IActionResult Post([FromRoute] string directory, [FromForm] IFormFile formFile)
 		{
@@ -53,7 +47,7 @@ namespace Schulcast.Server.Controllers
 			UnitOfWork.FileRepository.Add(file);
 			UnitOfWork.CommitChanges();
 
-			return Ok(formFile);
+			return Ok(file);
 		}
 
 		[HttpDelete("{id}"), Authorize(Roles = MemberRoles.Admin)]

@@ -13,7 +13,6 @@ namespace Schulcast.Server.Installers
 			{
 				options.RequireHttpsMetadata = false;
 				options.SaveToken = true;
-				// Set validation parameters
 				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuer = true,

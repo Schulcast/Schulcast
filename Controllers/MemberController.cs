@@ -29,13 +29,13 @@ namespace Schulcast.Server.Controllers
 
 			var member = UnitOfWork.MemberRepository.GetByNickname(nickname);
 
-			if (member.Password.ToLower() != Sha256.GetHash(password).ToLower())
+			if (member.Password?.ToLower() != Sha256.GetHash(password).ToLower())
 			{
 				throw new AuthenticationException("Incorrect Password");
 			}
 
-			var token = Token.IssueAccountAccess(TimeSpan.FromDays(30), member);
-			return Ok(token);
+			member.Token = Token.IssueAccountAccess(TimeSpan.FromDays(30), member);
+			return Ok(member.WithoutPassword());
 		}
 
 		[HttpGet("{id}/blog"), AllowAnonymous]
@@ -80,6 +80,12 @@ namespace Schulcast.Server.Controllers
 			if (id != member.Id)
 			{
 				return BadRequest();
+			}
+
+			if (string.IsNullOrWhiteSpace(member.Password))
+			{
+				var existingMember = UnitOfWork.MemberRepository.Get(member.Id);
+				member.Password = existingMember.Password;
 			}
 
 			UnitOfWork.MemberRepository.Update(member);

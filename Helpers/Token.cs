@@ -3,10 +3,10 @@ using Schulcast.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Linq;
 
 namespace Schulcast.Server.Helpers
 {
@@ -14,8 +14,8 @@ namespace Schulcast.Server.Helpers
 	{
 		static string Issue(TimeSpan expiration, ICollection<(string key, string value)> pairs)
 		{
-			var claims = new List<Claim>() {
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid ().ToString("N")),
+			var claims = new List<Claim> {
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
 			};
 			claims.AddRange(pairs.Where(pair => pair.value != null).Select(pair => new Claim(pair.key, pair.value)));
 			var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Program.Configuration["Jwt:SecretKey"])), SecurityAlgorithms.HmacSha256);

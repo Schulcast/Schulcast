@@ -6,9 +6,9 @@ namespace Schulcast.Server.Installers
 	{
 		public static IServiceCollection InstallSchulcast(this IServiceCollection services)
 		{
-			new AuthenticationInstaller().Install(services);
 			new DatabaseInstaller().Install(services);
 			new RepositoriesInstaller().Install(services);
+			new AuthenticationInstaller().Install(services);
 			return services;
 		}
 	}

@@ -11,6 +11,6 @@ namespace Schulcast.Server.Models
 		public string Response { get; set; } = null!;
 		[Required]
 		public int MemberId { get; set; }
-		public Member Member { get; set; } = null!;
+		public Member? Member { get; set; }
 	}
 }
