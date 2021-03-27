@@ -35,7 +35,7 @@ jobs:
           name: artifact
           path: artifact
 
-      - name: Deploy to Staging server
+      - name: Deploy
         uses: easingthemes/ssh-deploy@v2.1.6
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -43,6 +43,14 @@ jobs:
           REMOTE_USER: schulcast
           SOURCE: "artifact/"
           TARGET: "api.schulcast.de/"
+
+      - name: Restart Web Server
+        uses: garygrossgarten/github-action-ssh@release
+        env:
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: schulcast
+          command: sudo systemctl restart web01.service
 
       - name: Display status from deploy
         run: echo "${{ steps.deploy.outputs.status }}"
