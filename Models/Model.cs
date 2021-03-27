@@ -1,4 +1,4 @@
-namespace Schulcast.Core.Models
+namespace Schulcast.Server.Models
 {
 	public abstract class Model
 	{

@@ -5,7 +5,6 @@ using Schulcast.Server.Helpers;
 using Schulcast.Server.Models;
 using System;
 using System.Security.Authentication;
-using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {

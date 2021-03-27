@@ -1,4 +1,4 @@
-using Schulcast.Core.Models;
+using Schulcast.Server.Models;
 
 namespace Schulcast.Server.Models
 {

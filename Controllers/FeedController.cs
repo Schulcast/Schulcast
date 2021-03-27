@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {

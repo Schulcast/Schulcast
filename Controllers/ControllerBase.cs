@@ -1,7 +1,7 @@
 using Schulcast.Server.Data;
 using System.Linq;
 
-namespace Schulcast.Core.Controllers
+namespace Schulcast.Server.Controllers
 {
 	public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
 	{

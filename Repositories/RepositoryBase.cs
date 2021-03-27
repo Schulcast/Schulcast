@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Schulcast.Core.Models;
 using Schulcast.Server.Data;
 using Schulcast.Server.Exceptions;
 using Schulcast.Server.Helpers;
+using Schulcast.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,7 +6,6 @@ using Schulcast.Server.Models;
 using Schulcast.Server.Repositories;
 using System;
 using System.IO;
-using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {

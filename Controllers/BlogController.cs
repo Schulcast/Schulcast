@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Schulcast.Server.Data;
 using Schulcast.Server.Models;
 using System;
-using ControllerBase = Schulcast.Core.Controllers.ControllerBase;
 
 namespace Schulcast.Server.Controllers
 {

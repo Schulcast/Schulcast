@@ -1,4 +1,4 @@
-using Schulcast.Core.Models;
+using Schulcast.Server.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

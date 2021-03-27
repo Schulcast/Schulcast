@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Schulcast.Core.Helpers
+namespace Schulcast.Server.Helpers
 {
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Parameter, AllowMultiple = false, Inherited = true)]
 	public class UnbindAttribute : Attribute, IModelNameProvider, IPropertyFilterProvider
