@@ -36,8 +36,8 @@ namespace Schulcast.Server
 			{
 				app.UseDeveloperExceptionPage();
 			}
-			app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader())
-				.UseRouting()
+			app.UseRouting()
+				.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader())
 				.UseAuthentication()
 				.UseAuthorization()
 				.UseEndpoints(endpoints => endpoints.MapControllers());
