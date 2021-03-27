@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+
+      - name: Build
+        run: |
+          dotnet publish -c Release -r linux-x64 --self-contained false
+
+      - name: Upload Artifacts to GitHub
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: artifact
+          path: bin/Release/net5.0/linux-x64
+
+  Release:
+    runs-on: ubuntu-latest
+    needs: [Build]
+
+    steps:
+      - name: Download artifacts from GitHub
+        uses: actions/download-artifact@v1.0.0
+        with:
+          name: artifact
+          path: artifact
+
+      - name: Deploy to Staging server
+        uses: easingthemes/ssh-deploy@v2.1.6
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: schulcast
+          SOURCE: "artifact/"
+          TARGET: "api.schulcast.de/"
+
+      - name: Display status from deploy
+        run: echo "${{ steps.deploy.outputs.status }}"
