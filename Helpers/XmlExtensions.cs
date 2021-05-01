@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace Schulcast.Server.Helpers
 {
-	public static class Utilities
+	public static class XmlExtensions
 	{
 		public static string XmlSerializeToString(this object objectInstance)
 		{

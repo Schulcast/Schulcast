@@ -38,7 +38,7 @@ namespace Schulcast.Server.Controllers
 				PodcastCache = (await new WebClient().DownloadStringTaskAsync(podcastEndpoint), DateTime.Now);
 			}
 
-			return Utilities.XmlDeserializeFromString<PodcastResponse>(PodcastCache.Value!);
+			return PodcastCache.Value!.XmlDeserializeFromString<PodcastResponse>();
 		}
 
 		public FeedController(UnitOfWork unitOfWork) : base(unitOfWork) { }
