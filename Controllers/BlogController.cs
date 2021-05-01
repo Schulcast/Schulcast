@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Schulcast.Server.Data;
 using Schulcast.Server.Models;
 using System;
+using System.Collections.Generic;
 
 namespace Schulcast.Server.Controllers
 {
@@ -12,19 +13,19 @@ namespace Schulcast.Server.Controllers
 		public BlogController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
 		[HttpGet, AllowAnonymous]
-		public IActionResult GetAll()
+		public ActionResult<IEnumerable<Post>> GetAll()
 		{
 			return Ok(UnitOfWork.BlogRepository.GetAll());
 		}
 
 		[HttpGet("{id}"), AllowAnonymous]
-		public IActionResult Get([FromRoute] int id)
+		public ActionResult<Post> Get([FromRoute] int id)
 		{
 			return Ok(UnitOfWork.BlogRepository.Get(id));
 		}
 
 		[HttpDelete("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Delete([FromRoute] int id)
+		public ActionResult Delete([FromRoute] int id)
 		{
 			UnitOfWork.BlogRepository.Delete(id);
 			UnitOfWork.CommitChanges();
@@ -32,7 +33,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Post([FromBody] Post post)
+		public ActionResult<Post> Post([FromBody] Post post)
 		{
 			post.Published = DateTime.Now;
 			UnitOfWork.BlogRepository.Add(post);
@@ -41,7 +42,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpPut("{id}")]
-		public IActionResult Put([FromRoute] int id, [FromBody] Post post)
+		public ActionResult<Post> Put([FromRoute] int id, [FromBody] Post post)
 		{
 			var authenticatedAccount = UnitOfWork.MemberRepository.Get(AuthenticatedAccountId);
 

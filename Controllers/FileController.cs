@@ -15,13 +15,13 @@ namespace Schulcast.Server.Controllers
 		public FileController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
 		[HttpGet("{id}"), AllowAnonymous]
-		public IActionResult Get([FromRoute] int id)
+		public FileStreamResult Get([FromRoute] int id)
 		{
 			return File(System.IO.File.OpenRead(UnitOfWork.FileRepository.Get(id).Path), "image/jpeg");
 		}
 
 		[HttpPost("{directory}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Post([FromRoute] string directory, [FromForm] IFormFile formFile)
+		public ActionResult<Models.File> Post([FromRoute] string directory, [FromForm] IFormFile formFile)
 		{
 			if (Path.GetExtension(formFile.FileName).ToLower() != ".jpg")
 			{
@@ -50,7 +50,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpDelete("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Delete([FromRoute] int id)
+		public ActionResult Delete([FromRoute] int id)
 		{
 			UnitOfWork.FileRepository.Delete(id);
 			return Ok();

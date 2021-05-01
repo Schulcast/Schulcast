@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Schulcast.Server.Data;
 using Schulcast.Server.Models;
+using System.Collections.Generic;
 
 namespace Schulcast.Server.Controllers
 {
@@ -11,19 +12,19 @@ namespace Schulcast.Server.Controllers
 		public SlideController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
 		[HttpGet, AllowAnonymous]
-		public IActionResult Get()
+		public ActionResult<IEnumerable<Slide>> Get()
 		{
 			return Ok(UnitOfWork.SlideRepository.GetAll());
 		}
 
 		[HttpGet("{id}"), AllowAnonymous]
-		public IActionResult Get([FromRoute] int id)
+		public ActionResult<Slide> Get([FromRoute] int id)
 		{
 			return Ok(UnitOfWork.SlideRepository.Get(id));
 		}
 
 		[HttpPost, Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Post([FromBody] Slide slide)
+		public ActionResult<Slide> Post([FromBody] Slide slide)
 		{
 			UnitOfWork.SlideRepository.Add(slide);
 			UnitOfWork.CommitChanges();
@@ -31,7 +32,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpPut("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Put([FromRoute] int id, [FromBody] Slide slide)
+		public ActionResult<Slide> Put([FromRoute] int id, [FromBody] Slide slide)
 		{
 			if (id != slide.Id)
 			{
@@ -44,7 +45,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpDelete("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Delete([FromRoute] int id)
+		public ActionResult Delete([FromRoute] int id)
 		{
 			UnitOfWork.SlideRepository.Delete(id);
 			return Ok();

@@ -40,7 +40,8 @@ namespace Schulcast.Server
 				.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader())
 				.UseAuthentication()
 				.UseAuthorization()
-				.UseEndpoints(endpoints => endpoints.MapControllers());
+				.UseEndpoints(endpoints => endpoints.MapControllers())
+				.UseSwagger();
 		}
 	}
 }

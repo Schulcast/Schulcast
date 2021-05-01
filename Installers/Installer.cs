@@ -9,6 +9,7 @@ namespace Schulcast.Server.Installers
 			new DatabaseInstaller().Install(services);
 			new RepositoriesInstaller().Install(services);
 			new AuthenticationInstaller().Install(services);
+			new OpenApiInstaller().Install(services);
 			return services;
 		}
 	}

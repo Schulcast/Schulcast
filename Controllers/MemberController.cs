@@ -4,6 +4,8 @@ using Schulcast.Server.Data;
 using Schulcast.Server.Helpers;
 using Schulcast.Server.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Security.Authentication;
 
 namespace Schulcast.Server.Controllers
@@ -14,7 +16,7 @@ namespace Schulcast.Server.Controllers
 		public MemberController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
 		[HttpGet("authenticate"), AllowAnonymous]
-		public IActionResult Authenticate([FromQuery] string nickname, [FromQuery] string password)
+		public ActionResult<Member> Authenticate([FromQuery] string nickname, [FromQuery] string password)
 		{
 			if (nickname is null)
 			{
@@ -38,14 +40,14 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpGet("{id}/blog"), AllowAnonymous]
-		public IActionResult GetMemberPosts(int id)
+		public ActionResult<IEnumerable<Post>> GetMemberPosts(int id)
 		{
 			var member = UnitOfWork.MemberRepository.Get(id);
 			return Ok(member.Posts);
 		}
 
 		[HttpGet("{id}/image"), AllowAnonymous]
-		public IActionResult GetMemberImage(int id)
+		public FileStreamResult GetMemberImage(int id)
 		{
 			var member = UnitOfWork.MemberRepository.Get(id);
 			var filePath = UnitOfWork.FileRepository.Get(member.ImageId).Path;
@@ -54,19 +56,19 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpGet, AllowAnonymous]
-		public IActionResult GetAll()
+		public ActionResult<IEnumerable<Member>> GetAll()
 		{
 			return Ok(UnitOfWork.MemberRepository.GetAll().ExcludeSuperAdmin().WithoutPasswords());
 		}
 
 		[HttpGet("{id}"), AllowAnonymous]
-		public IActionResult Get(int id)
+		public ActionResult<Member> Get(int id)
 		{
 			return Ok(UnitOfWork.MemberRepository.Get(id).WithoutPassword());
 		}
 
 		[HttpPost, Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Post([FromBody] Member member)
+		public ActionResult<Member> Post([FromBody] Member member)
 		{
 			UnitOfWork.MemberRepository.Add(member);
 			UnitOfWork.CommitChanges();
@@ -74,7 +76,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpPut("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Put([FromRoute] int id, [FromBody] Member member)
+		public ActionResult<Member> Put([FromRoute] int id, [FromBody] Member member)
 		{
 			if (id != member.Id)
 			{
@@ -93,7 +95,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpDelete("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Delete([FromRoute] int id)
+		public ActionResult Delete([FromRoute] int id)
 		{
 			UnitOfWork.MemberRepository.Delete(id);
 			UnitOfWork.CommitChanges();

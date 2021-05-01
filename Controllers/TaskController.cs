@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Schulcast.Server.Data;
 using Schulcast.Server.Models;
+using System.Collections.Generic;
 
 namespace Schulcast.Server.Controllers
 {
@@ -11,19 +12,19 @@ namespace Schulcast.Server.Controllers
 		public TaskController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
 		[HttpGet, Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult GetAll()
+		public ActionResult<IEnumerable<Task>> GetAll()
 		{
 			return Ok(UnitOfWork.TaskRepository.GetAll());
 		}
 
 		[HttpGet("{id}"), AllowAnonymous]
-		public IActionResult Get([FromRoute] int id)
+		public ActionResult<Task> Get([FromRoute] int id)
 		{
 			return Ok(UnitOfWork.TaskRepository.Get(id));
 		}
 
 		[HttpPost, Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Post([FromBody] Task task)
+		public ActionResult<Task> Post([FromBody] Task task)
 		{
 			UnitOfWork.TaskRepository.Add(task);
 			UnitOfWork.CommitChanges();
@@ -31,7 +32,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpPut("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Put([FromRoute] int id, [FromBody] Task task)
+		public ActionResult<Task> Put([FromRoute] int id, [FromBody] Task task)
 		{
 			if (id != task.Id)
 			{
@@ -44,7 +45,7 @@ namespace Schulcast.Server.Controllers
 		}
 
 		[HttpDelete("{id}"), Authorize(Roles = MemberRoles.Admin)]
-		public IActionResult Delete([FromRoute] int id)
+		public ActionResult Delete([FromRoute] int id)
 		{
 			UnitOfWork.TaskRepository.Delete(id);
 			UnitOfWork.CommitChanges();

@@ -44,7 +44,7 @@ namespace Schulcast.Server.Controllers
 		public FeedController(UnitOfWork unitOfWork) : base(unitOfWork) { }
 
 		[HttpGet]
-		public async Task<IActionResult> Get()
+		public async Task<ActionResult<IEnumerable<FeedItem>>> Get()
 		{
 			// Start fetching videos and podcasts in parallel
 			var videosTask = FetchVideos();
