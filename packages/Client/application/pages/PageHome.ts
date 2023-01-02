@@ -28,8 +28,8 @@ export class PageHome extends PageComponent {
 
 			lit-slider {
 				height: 500px;
-				--lit-slider-navigation-color: var(--mo-accent);
-				--lit-slider-theme-color: var(--mo-accent);
+				--lit-slider-navigation-color: var(--mo-color-accent);
+				--lit-slider-theme-color: var(--mo-color-accent);
 			}
 
 			lit-slide div {

@@ -46,7 +46,7 @@ export class CardFeedItem extends Component {
 				right: 0;
 				bottom: 0;
 				backdrop-filter: blur(20px);
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 
 			:host(:hover) mo-flex[part=overlay] {

@@ -25,7 +25,7 @@ export class PageBlog extends PageComponent<{ id: number }> {
 
 			h1 {
 				overflow-wrap: break-word;
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 				flex: 1;
 				margin: 16px 0 0 0;
 				font-weight: 500;

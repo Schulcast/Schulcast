@@ -10,12 +10,12 @@ export class PageImprint extends PageComponent {
 			}
 
 			h2 {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 				font-weight: 400;
 			}
 
 			a {
-				color: var(--mo-accent);
+				color: var(--mo-color-accent);
 			}
 		`
 	}
