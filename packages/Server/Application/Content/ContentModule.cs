@@ -3,7 +3,7 @@ namespace Schulcast.Application.Content;
 public class ContentModule : Module
 {
 	public const string youtubeEndpoint = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyDACSbBULNEdyDfEoTHt3_8VIeqCuSTaxI&channelId=UCtow4J8YJPGjppfiBnmHicQ&part=snippet,id&order=date&maxResults=20";
-	public const string podcastEndpoint = "http://podcast.schulcast.de/feed.php";
+	public const string podcastEndpoint = "http://podcast.schulcast.de/feed.xml";
 
 	private static (string? Value, DateTime? Date) YoutubeCache { get; set; } = (null, DateTime.MinValue);
 	private static (string? Value, DateTime? Date) PodcastCache { get; set; } = (null, DateTime.MinValue);
@@ -30,14 +30,21 @@ public class ContentModule : Module
 				return JsonConvert.DeserializeObject<YoutubeResponse>(YoutubeCache.Value!)!;
 			}
 
-			static async Task<PodcastResponse> FetchPodcasts()
+			static async Task<PodcastResponse?> FetchPodcasts()
 			{
-				if (DateTime.Now - PodcastCache.Date > cacheThreshold)
+				try
 				{
-					PodcastCache = (await new WebClient().DownloadStringTaskAsync(podcastEndpoint), DateTime.Now);
-				}
+					if (DateTime.Now - PodcastCache.Date > cacheThreshold)
+					{
+						PodcastCache = (await new WebClient().DownloadStringTaskAsync(podcastEndpoint), DateTime.Now);
+					}
 
-				return PodcastCache.Value!.XmlDeserializeFromString<PodcastResponse>();
+					return PodcastCache.Value!.XmlDeserializeFromString<PodcastResponse>();
+				}
+				catch
+				{
+					return null;
+				}
 			}
 
 			var videosTask = FetchVideos();
@@ -55,7 +62,7 @@ public class ContentModule : Module
 						Link = $"https://www.youtube.com/watch?v={video.Id.VideoId}"
 					})
 				)
-				.Union((await podcastsTask).Channel.Item
+				.Union((await podcastsTask)?.Channel.Item
 					.Select(episode => new FeedItem
 					{
 						Title = episode.Title,
@@ -63,8 +70,8 @@ public class ContentModule : Module
 						Date = Convert.ToDateTime(episode.PubDate),
 						Type = FeedItemType.Podcast,
 						Link = episode.Enclosure.Url
-					})
-				)
+					}
+				) ?? Enumerable.Empty<FeedItem>())
 				.Union((await blogService.GetAll())
 					.Select(post => new FeedItem
 					{
