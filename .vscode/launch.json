@@ -6,7 +6,7 @@
 			"type": "coreclr",
 			"request": "launch",
 			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/bin/Debug/net5.0/Schulcast.Server.dll",
+			"program": "${workspaceFolder}/bin/Debug/net5.0/Schulcast.dll",
 			"args": [],
 			"cwd": "${workspaceFolder}",
 			"stopAtEntry": false,

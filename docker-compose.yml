@@ -1,0 +1,28 @@
+version: "3"
+services:
+  server:
+    restart: always
+    build:
+      context: ./packages/Server
+    ports:
+      - "80:80"
+    volumes:
+      - ./packages/Server:/server
+      - client:/client/
+    environment:
+      - BASE_URL=http://localhost
+      - ASPNETCORE_URLS=http://+:80
+      - DOTNET_WATCH_RESTART_ON_RUDE_EDIT=true
+      - JWT_SECRET=15pQjmReLS7FRTYZg7ehva2NE5ZtEkdMdw7h7CKgLh4S8T41jUS9jbuUqLeeUdcP
+
+  client:
+    restart: always
+    build:
+      context: ./packages/Client
+    volumes:
+      - ./packages/Client:/client
+      - /client/node_modules/
+      - client:/client/dist/
+
+volumes:
+  client:

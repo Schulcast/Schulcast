@@ -1,0 +1,36 @@
+{
+	"name": "@schulcast/client",
+	"scripts": {
+		"dev": "webpack --watch --mode=development",
+		"build": "webpack"
+	},
+	"dependencies": {
+		"@3mo/model": "git+https://github.com/3mo-esolutions/model.git",
+		"@a11d/lit-application-native": "x",
+		"@a11d/lit-slider": "x",
+		"@ts-stack/markdown": "x",
+		"js-sha256": "x"
+	},
+	"devDependencies": {
+		"@types/markdown-it": "*",
+		"@a11d/eslint-config": "x",
+		"@typescript-eslint/eslint-plugin": "x",
+		"@typescript-eslint/parser": "x",
+		"copy-webpack-plugin": "9.x",
+		"eslint": "x",
+		"eslint-plugin-import": "x",
+		"eslint-plugin-lit": "x",
+		"favicons": "x",
+		"favicons-webpack-plugin": "x",
+		"html-webpack-plugin": "x",
+		"lit-analyzer": "x",
+		"terser-webpack-plugin": "x",
+		"ts-lit-plugin": "x",
+		"ts-loader": "x",
+		"tsconfig-paths-webpack-plugin": "x",
+		"typescript": "4.x",
+		"webpack": "5.x",
+		"webpack-cli": "x",
+		"webpack-dev-server": "x"
+	}
+}

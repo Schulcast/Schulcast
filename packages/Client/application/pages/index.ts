@@ -1,0 +1,5 @@
+export * from './PageAdmin'
+export * from './PageHome'
+export * from './PageBlog'
+export * from './PageImprint'
+export * from './PageTeam'

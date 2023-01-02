@@ -1,0 +1,9 @@
+{
+	"name": "Schulcast",
+	"short_name": "Schulcast",
+	"theme_color": "rgb(204,14,0)",
+	"background_color": "rgb(204,14,0)",
+	"display": "standalone",
+	"Scope": "/",
+	"start_url": "/"
+}
