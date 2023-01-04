@@ -8,7 +8,6 @@
 	</PropertyGroup>
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="dotnet tool restore" IgnoreExitCode="true" />
-		<Exec Command="swagger tofile --output schulcast.api.json $(OutputPath)\$(AssemblyName).dll v1" IgnoreExitCode="true" />
 	</Target>
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -30,6 +29,5 @@
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
 	</ItemGroup>
 </Project>

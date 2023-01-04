@@ -45,7 +45,7 @@ export class PageHome extends PageComponent {
 			<lit-page heading='Startseite' fullHeight>
 				<mo-flex>
 					${!this.slides.length ? nothing : html`
-						<lit-slider ${style({ position: 'absolute', width: '100%', height: '400px' })}>
+						<lit-slider>
 							${this.slides.map(slide => html`
 								<lit-slide ${style({ background: `url("http://api.schulcast.de/file/${slide.id}")` })}>
 									<div>${slide.description}</div>
@@ -53,7 +53,7 @@ export class PageHome extends PageComponent {
 							`)}
 						</lit-slider>
 					`}
-					<mo-flex ${style({ marginTop: '400px' })}>
+					<mo-flex>
 						<h2>Zuletzt veröffentlicht</h2>
 						<mo-grid columns='repeat(auto-fit, minmax(250px, 1fr))' gap='1em'>
 							${this.feed.map(feedItem => html`<sc-card-feed-item .feedItem=${feedItem}></sc-card-feed-item>`)}

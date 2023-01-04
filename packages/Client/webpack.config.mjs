@@ -16,7 +16,8 @@ export default (_, args) => {
 			filename: args.mode === 'development' ? 'main.js' : 'main.[contenthash].js'
 		},
 		watchOptions: {
-			poll: 1000,
+			poll: 3000,
+			ignored: /node_modules/
 		},
 		devtool: args.mode !== 'development' ? false : 'source-map',
 		optimization: args.mode !== 'production' ? {

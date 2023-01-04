@@ -58,7 +58,7 @@ public class MemberService : CrudService<Member>
 			throw new Exception("The password is not provided");
 		}
 
-		var member = await GetByNickname(nickname);
+		var member = await _database.Members.FirstAsync(m => m.Nickname == nickname);
 
 		if (member.Password?.ToLower() != Sha256.GetHash(password).ToLower())
 		{

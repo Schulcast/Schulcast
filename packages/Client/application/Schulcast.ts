@@ -1,4 +1,4 @@
-import { component, css, html, property, Localizer, ThemeHelper, Color, ApplicationLogo, routerLink, Application, BusinessSuiteApplication } from '@3mo/model'
+import { component, css, html, property, Localizer, ThemeHelper, Color, ApplicationLogo, BusinessSuiteApplication, Navigation } from '@3mo/model'
 import * as Pages from './pages'
 
 
@@ -7,7 +7,15 @@ Localizer.currentLanguage = LanguageCode.German
 ApplicationLogo.source = '/assets/logo.png'
 
 @component('sc-application')
-export class Schulcast extends Application {
+export class Schulcast extends BusinessSuiteApplication {
+	protected get navigations(): Array<Navigation> {
+		return [
+			{ label: 'Startseite', icon: 'home', component: new Pages.PageHome() },
+			{ label: 'Team', icon: 'group', component: new Pages.PageTeam() },
+			{ label: 'Impressum', icon: 'info', component: new Pages.PageImprint() }
+		]
+	}
+
 	static get styles() {
 		return css`
 			${BusinessSuiteApplication.styles}
@@ -45,6 +53,10 @@ export class Schulcast extends Application {
 				padding-bottom: 40px;
 			}
 
+			#navbarNavigations {
+				justify-content: flex-end;
+			}
+
 			@media (max-width: 768px) {
 				mo-icon-button[icon=menu] {
 					display: block;
@@ -67,7 +79,7 @@ export class Schulcast extends Application {
 
 	@property({ type: Boolean, reflect: true }) playing = false
 
-	protected get bodyTemplate() {
+	protected override get bodyTemplate() {
 		return html`
 			${super.bodyTemplate}
 			<sc-player @sourceChange=${(e: CustomEvent<string | undefined>) => this.playing = !!e.detail}></sc-player>
@@ -75,30 +87,11 @@ export class Schulcast extends Application {
 		`
 	}
 
-	get drawerTemplate() {
-		return html`
-			<mo-list>
-				<mo-navigation-list-item icon='home' ${routerLink(new Pages.PageHome)}>Startseite</mo-navigation-list-item>
-				<mo-navigation-list-item icon='group' ${routerLink(new Pages.PageTeam)}>Team</mo-navigation-list-item>
-				<mo-navigation-list-item icon='info' ${routerLink(new Pages.PageImprint)}>Impressum</mo-navigation-list-item>
-			</mo-list>
-		`
-	}
-
-	get drawerFooterTemplate() {
+	protected override get drawerFooterTemplate() {
 		return html`
 			<mo-flex gap='20px'>
 				<sc-social-media></sc-social-media>
 				<sc-copyright></sc-copyright>
-			</mo-flex>
-		`
-	}
-
-	get topAppBarActionItemsTemplate() {
-		return html`
-			<mo-flex id='flexPages' direction='horizontal' gap='var(--mo-thickness-xl)' alignItems='center'>
-				<a href='' @click=${() => new Pages.PageHome().navigate()}>Startseite</a>
-				<a href='' @click=${() => new Pages.PageTeam().navigate()}>Team</a>
 			</mo-flex>
 		`
 	}
