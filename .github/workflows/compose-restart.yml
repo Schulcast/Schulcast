@@ -5,7 +5,7 @@ on:
 
 jobs:
   Restart:
-    name: ⬇️ Down
+    name: 🔄️ Restart
     runs-on: ubuntu-latest
     steps:
       - uses: appleboy/ssh-action@master
