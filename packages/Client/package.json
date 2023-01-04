@@ -12,7 +12,7 @@
 		"js-sha256": "x"
 	},
 	"devDependencies": {
-		"@types/markdown-it": "*",
+		"@types/markdown-it": "x",
 		"@a11d/eslint-config": "x",
 		"@typescript-eslint/eslint-plugin": "x",
 		"@typescript-eslint/parser": "x",

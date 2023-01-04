@@ -64,17 +64,8 @@ export default (_, args) => {
 					</html>
 				`
 			}),
-			new CopyPlugin({
-				patterns: [
-					{
-						from: 'node_modules/@3mo/model/www/',
-						to: '',
-						noErrorOnMissing: true
-					}
-				]
-			}),
 			new FaviconsWebpackPlugin({
-				logo: 'node_modules/@3mo/model/www/assets/images/3mo.svg',
+				logo: 'assets/logo.png',
 				manifest: './manifest.json',
 				favicons: {
 					appleStatusBarStyle: 'default'
@@ -85,11 +76,6 @@ export default (_, args) => {
 					{
 						from: 'assets/',
 						to: 'assets/'
-					},
-					{
-						from: 'instance.json',
-						to: 'instance.json',
-						noErrorOnMissing: true
 					}
 				]
 			})
