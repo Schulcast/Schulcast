@@ -44,23 +44,33 @@ export class PageHome extends PageComponent {
 		return html`
 			<lit-page heading='Startseite' fullHeight>
 				<mo-flex>
-					${!this.slides.length ? nothing : html`
-						<lit-slider>
-							${this.slides.map(slide => html`
-								<lit-slide ${style({ background: `url("/api/files/${slide.id}")` })}>
-									<div>${slide.description}</div>
-								</lit-slide>
-							`)}
-						</lit-slider>
-					`}
-					<mo-flex>
-						<h2>Zuletzt veröffentlicht</h2>
-						<mo-grid columns='repeat(auto-fit, minmax(250px, 1fr))' gap='1em'>
-							${this.feed.map(feedItem => html`<sc-card-feed-item .feedItem=${feedItem}></sc-card-feed-item>`)}
-						</mo-grid>
-					</mo-flex>
+					${this.slideTemplate}
+					${this.feedTemplate}
 				</mo-flex>
 			</lit-page>
+		`
+	}
+
+	private get slideTemplate() {
+		return !this.slides.length || true as boolean ? nothing : html`
+			<lit-slider>
+				${this.slides.map(slide => html`
+					<lit-slide ${style({ background: `url("/api/files/${slide.id}")` })}>
+						<div>${slide.description}</div>
+					</lit-slide>
+				`)}
+			</lit-slider>
+		`
+	}
+
+	private get feedTemplate() {
+		return html`
+			<mo-flex>
+				<h2>Zuletzt veröffentlicht</h2>
+				<mo-grid columns='repeat(auto-fit, minmax(250px, 1fr))' gap='1em'>
+					${this.feed.map(feedItem => html`<sc-card-feed-item .feedItem=${feedItem}></sc-card-feed-item>`)}
+				</mo-grid>
+			</mo-flex>
 		`
 	}
 }

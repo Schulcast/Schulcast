@@ -14,12 +14,12 @@ public class FileModule : Module
 
 		endpoints.MapPost("/api/files/{directory}", [Authorize(Roles = MemberRoles.Admin)] async (FileService fileService, string directory, IFormFile formFile) =>
 		{
-			if (Path.GetExtension(formFile.FileName).ToLower() != ".jpg")
+			if (formFile.ContentType.Contains("image") is false)
 			{
 				throw new Exception("Only JPG files are allowed");
 			}
 
-			if (formFile.Length > 1_000_000)
+			if (formFile.Length > 3_000_000)
 			{
 				throw new Exception("Only files smaller than 1MB are allowed");
 			}
