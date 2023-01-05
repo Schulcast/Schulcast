@@ -47,7 +47,7 @@ export class PageHome extends PageComponent {
 					${!this.slides.length ? nothing : html`
 						<lit-slider>
 							${this.slides.map(slide => html`
-								<lit-slide ${style({ background: `url("http://api.schulcast.de/file/${slide.id}")` })}>
+								<lit-slide ${style({ background: `url("/api/files/${slide.id}")` })}>
 									<div>${slide.description}</div>
 								</lit-slide>
 							`)}

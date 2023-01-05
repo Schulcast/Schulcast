@@ -57,14 +57,14 @@ export class PageAdmin extends PageComponent {
 	protected get template() {
 		return html`
 			<mo-page heading='Admin Center' fullHeight>
-				<mo-tab-bar slot='headingDetails' value=${this.tab} @change=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
-					<mo-tab value=${Tab.Posts} label='Blogeinträge'></mo-tab>
-					<mo-tab value=${Tab.Members} label='Mitglieder'></mo-tab>
-					${DialogAuthenticate.authenticatedMember?.role !== 'Admin' ? nothing : html`
+				${DialogAuthenticate.authenticatedMember?.role !== 'Admin' ? nothing : html`
+					<mo-tab-bar slot='headingDetails' value=${this.tab} @change=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
+						<mo-tab value=${Tab.Posts} label='Blogeinträge'></mo-tab>
+						<mo-tab value=${Tab.Members} label='Mitglieder'></mo-tab>
 						<mo-tab value=${Tab.Slides} label='Slideshow'></mo-tab>
 						<mo-tab value=${Tab.Tasks} label='Aufgabengruppen'></mo-tab>
-					`}
-				</mo-tab-bar>
+					</mo-tab-bar>
+				`}
 
 				<mo-flex>
 					${!DialogAuthenticate.isAuthenticated ? nothing : html`

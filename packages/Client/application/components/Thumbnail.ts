@@ -21,7 +21,7 @@ export class Thumbnail extends Component {
 	}
 
 	protected get template() {
-		this.style.setProperty('--sc-thumbnail-background-image', this.fileId > 0 ? `url(/api/file/${this.fileId})` : '')
+		this.style.setProperty('--sc-thumbnail-background-image', this.fileId > 0 ? `url("/api/files/${this.fileId}")` : '')
 		return super.template
 	}
 }
