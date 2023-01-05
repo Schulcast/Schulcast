@@ -7,7 +7,7 @@
 	"dependencies": {
 		"@3mo/model": "git+https://github.com/3mo-esolutions/model.git",
 		"@a11d/lit-application-native": "x",
-		"@a11d/lit-slider": "x",
+		"@a11d/lit-slider": "0.0.1",
 		"@ts-stack/markdown": "x",
 		"js-sha256": "x"
 	},
