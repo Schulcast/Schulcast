@@ -52,10 +52,10 @@ export class PageHome extends PageComponent {
 	}
 
 	private get slideTemplate() {
-		return !this.slides.length || true as boolean ? nothing : html`
+		return !this.slides.length ? nothing : html`
 			<lit-slider>
 				${this.slides.map(slide => html`
-					<lit-slide ${style({ background: `url("/api/files/${slide.id}")` })}>
+					<lit-slide ${style({ width: 'calc(100vw - 21px)', background: `url("/api/files/${slide.id}")` })}>
 						<div>${slide.description}</div>
 					</lit-slide>
 				`)}

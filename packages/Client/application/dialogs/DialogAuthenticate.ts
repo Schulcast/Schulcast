@@ -1,11 +1,11 @@
-import { component, DialogComponent, html, state, LocalStorageEntry } from '@3mo/model'
+import { component, DialogComponent, html, state, LocalStorage } from '@3mo/model'
 import { Member, API } from 'sdk'
 
 // TODO: handle through MoDeL's DialogAuthenticator
 
 @component('sc-dialog-authenticate')
 export class DialogAuthenticate extends DialogComponent {
-	private static authenticatedMemberEntry = new LocalStorageEntry<Member | undefined>('Schulcast.AuthenticatedMember', undefined)
+	private static authenticatedMemberEntry = new LocalStorage<Member | undefined>('Schulcast.AuthenticatedMember', undefined)
 
 	static get authenticatedMember() {
 		return this.authenticatedMemberEntry.value
