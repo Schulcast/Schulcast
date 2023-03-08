@@ -1,10 +1,13 @@
-import { component, html } from '@3mo/model'
-import { entityDialogComponent, EntityDialogComponent } from './EntityDialogComponent'
-import { Task } from 'sdk'
+import { component, html, EntityDialogComponent } from '@3mo/model'
+import { Task, TaskService } from 'sdk'
 
-@entityDialogComponent('task')
 @component('sc-dialog-task')
 export class DialogTask extends EntityDialogComponent<Task> {
+	protected entity = new Task
+	protected fetch = TaskService.get
+	protected save = TaskService.save
+	protected delete = TaskService.delete
+
 	private get header() {
 		return this.entity.id
 			? `Aufgabe #${this.entity.id}`
@@ -13,12 +16,12 @@ export class DialogTask extends EntityDialogComponent<Task> {
 
 	protected get template() {
 		return html`
-			<mo-dialog heading=${this.header}>
+			<mo-entity-dialog heading=${this.header}>
 				<mo-field-text label='Titel' required
 					value=${this.entity.title}
 					@change=${(e: CustomEvent<string>) => this.entity.title = e.detail}
 				></mo-field-text>
-			</mo-dialog>
+			</mo-entity-dialog>
 		`
 	}
 }

@@ -1,4 +1,4 @@
-import { html, component, DialogComponent, css } from '@3mo/model'
+import { html, component, DialogComponent, css, ifDefined } from '@3mo/model'
 import { Member } from 'sdk'
 
 @component('sc-dialog-member-data')
@@ -51,11 +51,11 @@ export class DialogMemberData extends DialogComponent<{ member: Member }> {
 		return html`
 			<mo-dialog heading='Details' primaryButtonText=''>
 				<mo-flex alignItems='center'>
-					<sc-thumbnail fileId=${this.member.imageId}></sc-thumbnail>
+					<sc-thumbnail fileId=${ifDefined(this.member.imageId)}></sc-thumbnail>
 					<table>
 						<tr>
 							<td>Aufgaben</td>
-							<td>${this.member.tasks?.map(memberTask => memberTask.task.title).join(' - ')}</td>
+							<td>${this.member.tasks?.map(memberTask => memberTask.task?.title).join(' - ')}</td>
 						</tr>
 
 						${this.member.data.map(memberData => html`

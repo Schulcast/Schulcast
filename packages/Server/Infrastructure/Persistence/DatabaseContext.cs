@@ -51,6 +51,8 @@ public class DatabaseContext : DbContext, IDatabase
 		modelBuilder.Entity<MemberTask>().HasKey(mt => new { mt.MemberId, mt.TaskId });
 		modelBuilder.Entity<MemberTask>().HasOne(mt => mt.Member).WithMany(m => m.Tasks).HasForeignKey(mt => mt.MemberId);
 		modelBuilder.Entity<MemberTask>().HasOne(mt => mt.Task).WithMany(t => t.Members).HasForeignKey(mt => mt.TaskId);
+
+		modelBuilder.Entity<Post>(p => p.Property(m => m.Tags)!.HasJsonConversion(Array.Empty<string>()));
 	}
 
 	public DbSet<TEntity> GetSet<TEntity>() where TEntity : class => Set<TEntity>();

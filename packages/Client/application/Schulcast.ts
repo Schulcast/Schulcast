@@ -1,4 +1,4 @@
-import { component, css, html, property, Localizer, ThemeHelper, Color, ApplicationLogo, BusinessSuiteApplication, Navigation } from '@3mo/model'
+import { component, css, html, property, Localizer, ThemeHelper, Color, ApplicationLogo, BusinessSuiteApplication, Navigation, nothing } from '@3mo/model'
 import * as Pages from './pages'
 
 
@@ -12,7 +12,8 @@ export class Schulcast extends BusinessSuiteApplication {
 		return [
 			{ label: 'Startseite', icon: 'home', component: new Pages.PageHome() },
 			{ label: 'Team', icon: 'group', component: new Pages.PageTeam() },
-			{ label: 'Impressum', icon: 'info', component: new Pages.PageImprint() }
+			{ label: 'Impressum', icon: 'info', component: new Pages.PageImprint() },
+			{ label: 'Olympia 2023', icon: 'history_edu', component: new Pages.PageOlympia2023() }
 		]
 	}
 
@@ -94,5 +95,9 @@ export class Schulcast extends BusinessSuiteApplication {
 				<sc-copyright></sc-copyright>
 			</mo-flex>
 		`
+	}
+
+	protected override get navbarTrailingTemplate() {
+		return nothing
 	}
 }

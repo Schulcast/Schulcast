@@ -1,4 +1,3 @@
-export * from './IsoDate'
 export * from './Entity'
 export * from './Task'
 export * from './Member'

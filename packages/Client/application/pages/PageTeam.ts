@@ -1,6 +1,6 @@
 
 import { component, css, html, PageComponent, property, route } from '@3mo/model'
-import { API, Member } from 'sdk'
+import { Member, MemberService } from 'sdk'
 import { DialogMemberData } from '../dialogs'
 
 @route('/team')
@@ -9,7 +9,7 @@ export class PageTeam extends PageComponent {
 	@property({ type: Object }) members = new Array<Member>()
 
 	protected async initialized() {
-		this.members = await API.get('member') ?? []
+		this.members = await MemberService.getAll()
 	}
 
 	static get styles() {

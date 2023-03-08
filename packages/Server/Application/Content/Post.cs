@@ -8,4 +8,5 @@ public class Post : Model
 	public DateTime LastUpdated { get; set; }
 	public int MemberId { get; set; }
 	public Member? Member { get; set; }
+	public string[] Tags { get; set; } = Array.Empty<string>();
 }

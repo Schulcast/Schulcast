@@ -2,31 +2,25 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": ".NET Launch (web)",
+			"name": ".NET Docker Attach",
 			"type": "coreclr",
-			"request": "launch",
-			"preLaunchTask": "build",
-			"program": "${workspaceFolder}/bin/Debug/net5.0/Schulcast.dll",
-			"args": [],
-			"cwd": "${workspaceFolder}",
-			"stopAtEntry": false,
-			"requireExactSource": true,
-			"serverReadyAction": {
-				"action": "openExternally",
-				"pattern": "\\\\bNow listening on:\\\\s+(https?://\\\\S+)"
-			},
-			"env": {
-				"ASPNETCORE_ENVIRONMENT": "Development"
+			"justMyCode": false,
+			"request": "attach",
+			"processId": "${command:pickRemoteProcess}",
+			"pipeTransport": {
+				"pipeProgram": "docker",
+				"pipeArgs": [
+					"exec",
+					"-i",
+					"schulcast-server-1"
+				],
+				"debuggerPath": "/vsdbg/vsdbg",
+				"pipeCwd": "${workspaceRoot}/packages/Server",
+				"quoteArgs": false
 			},
 			"sourceFileMap": {
-				"/Views": "${workspaceFolder}/Views"
+				"/server": "${workspaceRoot}/packages/Server/"
 			}
-		},
-		{
-			"name": ".NET Attach",
-			"type": "coreclr",
-			"request": "attach",
-			"processId": "${command:pickProcess}"
 		}
 	]
 }

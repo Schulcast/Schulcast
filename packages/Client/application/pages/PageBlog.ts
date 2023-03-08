@@ -1,14 +1,14 @@
 import { component, PageComponent, route, html, property, css, style } from '@3mo/model'
-import { API, Post } from 'sdk'
+import { BlogService, Post } from 'sdk'
 import { Marked } from '@ts-stack/markdown'
 
 @route('/blog/:id')
 @component('sc-page-blog')
-export class PageBlog extends PageComponent<{ id: number }> {
+export class PageBlog extends PageComponent<{ readonly id: number }> {
 	@property({ type: Object }) post?: Post
 
 	protected async initialized() {
-		this.post = await API.get(`blog/${this.parameters.id}`)
+		this.post = await BlogService.get(this.parameters.id)
 	}
 
 	static get styles() {

@@ -16,7 +16,7 @@ public class ContentModule : Module
 		endpoints.MapGet("/api/blog", [AllowAnonymous] (BlogService blogService) => blogService.GetAll());
 		endpoints.MapGet("/api/blog/{id}", [AllowAnonymous] (BlogService blogService, int id) => blogService.Get(id));
 		endpoints.MapPost("/api/blog", (BlogService blogService, Post post) => blogService.Create(post));
-		endpoints.MapPut("/api/blog", (BlogService blogService, Post post) => blogService.Update(post));
+		endpoints.MapPut("/api/blog", [Authorize(Roles = MemberRoles.Admin)] (BlogService blogService, Post post) => blogService.Update(post));
 		endpoints.MapDelete("/api/blog/{id}", [Authorize(Roles = MemberRoles.Admin)] (BlogService blogService, int id) => blogService.Delete(id));
 		endpoints.MapGet("/api/feed", [AllowAnonymous] async (BlogService blogService) =>
 		{
@@ -27,7 +27,7 @@ public class ContentModule : Module
 					YoutubeCache = (await new WebClient().DownloadStringTaskAsync(youtubeEndpoint), DateTime.Now);
 				}
 
-				return JsonConvert.DeserializeObject<YoutubeResponse>(YoutubeCache.Value!)!;
+				return Newtonsoft.Json.JsonConvert.DeserializeObject<YoutubeResponse>(YoutubeCache.Value!)!;
 			}
 
 			static async Task<PodcastResponse?> FetchPodcasts()
@@ -79,7 +79,8 @@ public class ContentModule : Module
 						ImageUrl = "",
 						Date = post.Published,
 						Type = FeedItemType.Article,
-						Link = $"blog/{post.Id}"
+						Link = $"blog/{post.Id}",
+						Tags = post.Tags
 					})
 				)
 				.OrderByDescending(p => p.Date)

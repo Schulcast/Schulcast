@@ -1,6 +1,6 @@
 namespace Schulcast.Application.Members;
 
-public static class Token
+public static class TokenIssuer
 {
 	public static string Issue(TimeSpan expiration, ICollection<(string key, string value)> pairs)
 	{
@@ -21,7 +21,7 @@ public static class Token
 		return new JwtSecurityTokenHandler().WriteToken(token);
 	}
 
-	public static string IssueAccountAccess(TimeSpan expiration, Member member)
+	public static string IssueForMember(TimeSpan expiration, Member member)
 	{
 		return Issue(expiration,
 			new[] {

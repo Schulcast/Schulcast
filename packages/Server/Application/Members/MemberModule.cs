@@ -12,6 +12,7 @@ public class MemberModule : Module
 		endpoints.MapPut("/api/member", [Authorize(Roles = MemberRoles.Admin)] (MemberService memberService, Member member) => memberService.Update(member));
 		endpoints.MapDelete("/api/member/{id}", [Authorize(Roles = MemberRoles.Admin)] (MemberService memberService, int id) => memberService.Delete(id));
 		endpoints.MapGet("/api/member/authenticate", [AllowAnonymous] (MemberService memberService, string nickname, string password) => memberService.Authenticate(nickname, password));
+		endpoints.MapGet("/api/member/is-authenticated", [AllowAnonymous] (MemberService memberService) => memberService.IsAuthenticated());
 		endpoints.MapGet("/api/member/{id}/blog", [AllowAnonymous] (MemberService memberService, int id) => memberService.GetMemberPosts(id));
 		endpoints.MapGet("/api/member/{id}/image", [AllowAnonymous] async (MemberService memberService, FileService fileService, int id) =>
 		{

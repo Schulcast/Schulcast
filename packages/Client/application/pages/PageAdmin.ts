@@ -1,6 +1,6 @@
-import { component, html, state, PageComponent, property, route, nothing, style, css } from '@3mo/model'
-import { API, Slide, Task, Post, Member } from 'sdk'
-import { DialogAuthenticate, DialogPost, DialogMember, DialogSlide, DialogTask } from '../dialogs'
+import { component, html, state, PageComponent, property, route, nothing, style, css, requiresAuthentication } from '@3mo/model'
+import { TaskService, MemberService, Slide, Task, Post, Member, SlideService, BlogService } from 'sdk'
+import { DialogAuthentication, DialogPost, DialogMember, DialogSlide, DialogTask } from '../dialogs'
 
 const enum Tab {
 	Slides = 'slides',
@@ -11,6 +11,7 @@ const enum Tab {
 
 @route('/admin')
 @component('sc-page-admin')
+@requiresAuthentication()
 export class PageAdmin extends PageComponent {
 	@property({ type: Object }) slides = new Array<Slide>()
 	@property({ type: Object }) tasks = new Array<Task>()
@@ -26,19 +27,19 @@ export class PageAdmin extends PageComponent {
 		this.fetchPosts()
 	}
 
-	private readonly fetchSlides = async () => this.slides = await API.get('slide') ?? []
-	private readonly fetchTasks = async () => this.tasks = await API.get('task') ?? []
-	private readonly fetchMembers = async () => this.members = await API.get('member') ?? []
-	private readonly fetchPosts = async () => this.posts = await API.get('blog') ?? []
+	private readonly fetchSlides = async () => this.slides = await SlideService.getAll()
+	private readonly fetchTasks = async () => this.tasks = await TaskService.getAll()
+	private readonly fetchMembers = async () => this.members = await MemberService.getAll()
+	private readonly fetchPosts = async () => this.posts = await BlogService.getAll()
 
 	private readonly authenticate = async () => {
-		await new DialogAuthenticate().confirm()
+		await new DialogAuthentication().confirm()
 		this.requestUpdate()
 		await this.updateComplete
 	}
 
 	private unauthenticate() {
-		DialogAuthenticate.unauthenticate()
+		MemberService.unauthenticate()
 		new PageAdmin().navigate()
 	}
 
@@ -57,7 +58,7 @@ export class PageAdmin extends PageComponent {
 	protected get template() {
 		return html`
 			<mo-page heading='Admin Center' fullHeight>
-				${DialogAuthenticate.authenticatedMember?.role !== 'Admin' ? nothing : html`
+				${!DialogAuthentication.isAuthenticated ? nothing : html`
 					<mo-tab-bar slot='headingDetails' value=${this.tab} @change=${(e: CustomEvent<Tab>) => this.tab = e.detail}>
 						<mo-tab value=${Tab.Posts} label='Blogeinträge'></mo-tab>
 						<mo-tab value=${Tab.Members} label='Mitglieder'></mo-tab>
@@ -67,13 +68,13 @@ export class PageAdmin extends PageComponent {
 				`}
 
 				<mo-flex>
-					${!DialogAuthenticate.isAuthenticated ? nothing : html`
+					${!DialogAuthentication.isAuthenticated ? nothing : html`
 						<mo-grid columns='repeat(auto-fit, minmax(225px, 1fr))' gap='var(--mo-thickness-m)' ${style({ width: '100%' })}>
 							${this.currentTabCards}
 						</mo-grid>
 					`}
 
-					${!DialogAuthenticate.isAuthenticated ? nothing : html`
+					${!DialogAuthentication.isAuthenticated ? nothing : html`
 						<mo-fab icon='add'
 							${style({ position: 'absolute', right: '16px', bottom: '85px' })}
 							@click=${this.openDialog}
@@ -82,9 +83,9 @@ export class PageAdmin extends PageComponent {
 
 					<mo-fab
 						${style({ position: 'absolute', right: '16px', bottom: '16px' })}
-						icon=${DialogAuthenticate.isAuthenticated ? 'logout' : 'login'}
-						@click=${DialogAuthenticate.isAuthenticated ? this.unauthenticate : this.authenticate}
-					>${DialogAuthenticate.isAuthenticated ? 'Ausloggen' : 'Einloggen'}</mo-fab>
+						icon=${DialogAuthentication.isAuthenticated ? 'logout' : 'login'}
+						@click=${DialogAuthentication.isAuthenticated ? this.unauthenticate : this.authenticate}
+					>${DialogAuthentication.isAuthenticated ? 'Ausloggen' : 'Einloggen'}</mo-fab>
 				</mo-flex>
 			</mo-page>
 		`
@@ -130,22 +131,22 @@ export class PageAdmin extends PageComponent {
 	}
 
 	private readonly openSlideDialog = async (slide?: Slide) => {
-		await new DialogSlide({ entity: slide }).confirm()
+		await new DialogSlide({ id: slide?.id }).confirm()
 		await this.fetchSlides()
 	}
 
 	private readonly openTaskDialog = async (task?: Task) => {
-		await new DialogTask({ entity: task }).confirm()
+		await new DialogTask({ id: task?.id }).confirm()
 		await this.fetchTasks()
 	}
 
 	private readonly openMemberDialog = async (member?: Member) => {
-		await new DialogMember({ entity: member }).confirm()
+		await new DialogMember({ id: member?.id }).confirm()
 		await this.fetchMembers()
 	}
 
 	private readonly openPostDialog = async (post?: Post) => {
-		await new DialogPost({ entity: post }).confirm()
+		await new DialogPost({ id: post?.id }).confirm()
 		await this.fetchPosts()
 	}
 }

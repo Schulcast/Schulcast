@@ -6,14 +6,17 @@
 	},
 	"dependencies": {
 		"@3mo/model": "git+https://github.com/3mo-esolutions/model.git",
+		"@a11d/api": "x",
+		"@a11d/api-dotnet": "x",
 		"@a11d/lit-application-native": "x",
-		"@a11d/lit-slider": "0.0.1",
+		"@a11d/lit-slider": "x",
+		"@a11d/api-jwt": "x",
 		"@ts-stack/markdown": "x",
 		"js-sha256": "x"
 	},
 	"devDependencies": {
-		"@types/markdown-it": "x",
 		"@a11d/eslint-config": "x",
+		"@types/markdown-it": "x",
 		"@typescript-eslint/eslint-plugin": "x",
 		"@typescript-eslint/parser": "x",
 		"copy-webpack-plugin": "9.x",

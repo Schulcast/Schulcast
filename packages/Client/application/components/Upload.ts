@@ -1,5 +1,5 @@
 import { Component, component, css, html, property, query } from '@3mo/model'
-import { API } from 'sdk'
+import { Api } from 'sdk'
 
 /** @attr folder */
 @component('sc-upload')
@@ -30,7 +30,7 @@ export class Upload<T = undefined> extends Component {
 
 	upload = async () => {
 		if (this.folder && this.inputElement.value !== '') {
-			const response = await API.postFile(`files/${this.folder}`, this.files)
+			const response = await Api.postFile(`/files/${this.folder}`, this.files[0])
 			this.inputElement.value = ''
 			return response as T
 		}

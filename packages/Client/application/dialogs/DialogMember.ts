@@ -1,20 +1,16 @@
 
-import { component, html, property, query } from '@3mo/model'
-import { entityDialogComponent, EntityDialogComponent } from './EntityDialogComponent'
-import { API, Member, MemberTask, Task } from 'sdk'
+import { component, html, query, EntityDialogComponent, ifDefined } from '@3mo/model'
+import { Member, MemberService, MemberTask } from 'sdk'
 import { Upload } from '../components'
 import { sha256 } from 'js-sha256'
 
-@entityDialogComponent('member')
 @component('sc-dialog-member')
 export class DialogMember extends EntityDialogComponent<Member> {
-	@property({ type: Object }) tasks = new Array<Task>()
+	protected entity = new Member
+	protected fetch = MemberService.get
+	protected delete = MemberService.delete
 
 	@query('sc-upload') private readonly uploadElement?: Upload<{ id: number }>
-
-	protected async initialized() {
-		this.tasks = await API.get('task') ?? []
-	}
 
 	private get header() {
 		return this.entity.id
@@ -24,15 +20,15 @@ export class DialogMember extends EntityDialogComponent<Member> {
 
 	protected get template() {
 		return html`
-			<mo-dialog heading=${this.header}>
+			<mo-entity-dialog heading=${this.header}>
 				<mo-flex gap='var(--mo-thickness-l)'>
 					<mo-flex alignItems='center' gap='var(--mo-thickness-l)'>
-						<sc-thumbnail ?hidden=${!this.entity.imageId} fileId=${this.entity.imageId}></sc-thumbnail>
+						<sc-thumbnail ?hidden=${!this.entity.imageId} fileId=${ifDefined(this.entity.imageId)}></sc-thumbnail>
 						<mo-button @click=${() => this.uploadElement?.open()}>${this.uploadButtonLabel}</mo-button>
 					</mo-flex>
 
 					<mo-field-text label='Spitzname' required
-						value=${this.entity.nickname}
+						value=${ifDefined(this.entity.nickname)}
 						@change=${(e: CustomEvent<string>) => this.entity.nickname = e.detail}
 					></mo-field-text>
 
@@ -41,18 +37,14 @@ export class DialogMember extends EntityDialogComponent<Member> {
 						@change=${(e: CustomEvent<string>) => this.entity.password = sha256(e.detail)}
 					></mo-field-password>
 
-					<mo-field-select label='Aufgabe' multiple
+					<sc-field-select-task label='Aufgabe' multiple
 						.value=${this.entity.tasks?.map(task => String(task.taskId))}
 						@change=${(e: CustomEvent<Array<number>>) => this.entity.tasks = e.detail.map(taskId => ({ taskId: taskId, memberId: this.entity.id })) as Array<MemberTask>}
-					>
-						${this.tasks.map(task => html`
-							<mo-option value=${task.id} multiple>${task.title}</mo-option>
-						`)}
-					</mo-field-select>
+					></sc-field-select-task>
 				</mo-flex>
 
 				<sc-upload folder='members'></sc-upload>
-			</mo-dialog>
+			</mo-entity-dialog>
 		`
 	}
 
@@ -67,9 +59,9 @@ export class DialogMember extends EntityDialogComponent<Member> {
 		}
 	}
 
-	protected async save() {
+	protected async save(member: Member) {
 		await this.uploadImageIfSet()
-		await super.save()
+		await MemberService.save(member)
 	}
 
 	private readonly uploadImageIfSet = async () => {

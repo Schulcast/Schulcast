@@ -46,7 +46,7 @@ public class MemberService : CrudService<Member>
 		return (await base.Update(model)).WithoutPassword();
 	}
 
-	public async Task<Member> Authenticate(string nickname, string password)
+	public async Task<string> Authenticate(string nickname, string password)
 	{
 		if (nickname is null)
 		{
@@ -60,18 +60,19 @@ public class MemberService : CrudService<Member>
 
 		var member = await _database.Members.FirstAsync(m => m.Nickname == nickname);
 
-		if (member.Password?.ToLower() != Sha256.GetHash(password).ToLower())
-		{
-			throw new SecurityException("Incorrect Password");
-		}
-
-		member.Token = Token.IssueAccountAccess(TimeSpan.FromDays(30), member);
-		return member.WithoutPassword();
+		return member.Password?.ToLower() != Sha256.GetHash(password).ToLower()
+			? throw new SecurityException("Incorrect Password")
+			: TokenIssuer.IssueForMember(TimeSpan.FromDays(30), member);
 	}
 
 	public async Task<IEnumerable<Post>> GetMemberPosts(int id)
 	{
 		var member = await Get(id);
 		return member.Posts;
+	}
+
+	public bool IsAuthenticated()
+	{
+		return _currentUserService.Id is not null;
 	}
 }

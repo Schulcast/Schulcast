@@ -1,39 +1,32 @@
-import { component, DialogComponent, html, state, LocalStorage } from '@3mo/model'
-import { Member, API } from 'sdk'
+import { component } from '@a11d/lit'
+import { authenticator } from '@a11d/lit-application-authentication'
+import { BusinessSuiteDialogAuthenticator } from '@3mo/model'
+import { MemberService, JwtApiAuthenticator } from 'sdk'
 
-// TODO: handle through MoDeL's DialogAuthenticator
+@authenticator()
+@component('sc-dialog-authentication')
+export class DialogAuthentication extends BusinessSuiteDialogAuthenticator {
+	static get isAuthenticated() { return !!JwtApiAuthenticator.token }
 
-@component('sc-dialog-authenticate')
-export class DialogAuthenticate extends DialogComponent {
-	private static authenticatedMemberEntry = new LocalStorage<Member | undefined>('Schulcast.AuthenticatedMember', undefined)
-
-	static get authenticatedMember() {
-		return this.authenticatedMemberEntry.value
+	protected async requestAuthentication() {
+		await MemberService.authenticate(this.username, this.password)
+		return {
+			id: 1,
+			name: this.username,
+			email: '',
+		}
 	}
 
-	static get isAuthenticated() {
-		return !!this.authenticatedMember
+	protected requestUnauthentication() {
+		return Promise.resolve(MemberService.unauthenticate())
 	}
 
-	static unauthenticate = () => {
-		DialogAuthenticate.authenticatedMemberEntry.value = undefined
+	protected isAuthenticatedServerSide() {
+		return MemberService.isAuthenticated()
 	}
 
-	@state() private username = ''
-	@state() private password = ''
-
-	protected get template() {
-		return html`
-			<mo-dialog heading='Einloggen' primaryButtonText='Einloggen'>
-				<mo-flex gap='var(--mo-thickness-m)'>
-					<mo-field-text label='Spitzname' required @change=${(e: CustomEvent<string>) => this.username = e.detail}></mo-field-text>
-					<mo-field-password label='Passwort' required @change=${(e: CustomEvent<string>) => this.password = e.detail}></mo-field-password>
-				</mo-flex>
-			</mo-dialog>
-		`
-	}
-
-	protected async primaryAction() {
-		DialogAuthenticate.authenticatedMemberEntry.value = await API.get<Member>(`member/authenticate?nickname=${this.username}&password=${this.password}`)
+	// eslint-disable-next-line require-await
+	protected async requestPasswordReset() {
+		throw new Error('Please contact your administrator to reset your password.')
 	}
 }

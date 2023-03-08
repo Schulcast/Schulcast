@@ -12,8 +12,15 @@ public class FileModule : Module
 			return Results.File(System.IO.File.OpenRead(file.Path), "image/jpeg");
 		});
 
-		endpoints.MapPost("/api/files/{directory}", [Authorize(Roles = MemberRoles.Admin)] async (FileService fileService, string directory, IFormFile formFile) =>
+		endpoints.MapPost("/api/files/{directory}", [Authorize(Roles = MemberRoles.Admin)] async (FileService fileService, string directory, HttpRequest request) =>
 		{
+			var formFile = request.Form.Files.GetFile("file");
+
+			if (formFile is null)
+			{
+				throw new Exception("No file");
+			}
+
 			if (formFile.ContentType.Contains("image") is false)
 			{
 				throw new Exception("Only JPG files are allowed");

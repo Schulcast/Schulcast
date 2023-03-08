@@ -1,4 +1,3 @@
-export * from './EntityDialogComponent'
 export * from './DialogAuthenticate'
 export * from './DialogMember'
 export * from './DialogMemberData'

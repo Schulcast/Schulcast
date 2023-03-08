@@ -41,7 +41,6 @@ global using Schulcast.Infrastructure;
 global using Schulcast.Infrastructure.Identity;
 global using Microsoft.EntityFrameworkCore.Migrations;
 global using Schulcast.Infrastructure.Persistence;
-global using Newtonsoft.Json;
 global using Microsoft.Extensions.Caching.Memory;
 
 WebApplication.CreateBuilder(args)

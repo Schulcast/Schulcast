@@ -16,14 +16,8 @@ public class BlogService : CachedCrudService<Post>
 
 	public override async Task<Post> Update(Post model)
 	{
-		var authenticatedAccount = await _memberService.GetAuthenticated();
-
-		if (model.MemberId != _currentUserService.Id && authenticatedAccount.Role != MemberRoles.Admin)
-		{
-			throw new UnauthorizedAccessException();
-		}
-
-		model.LastUpdated = DateTime.Now;
+		model.Member = null;
+		model.LastUpdated = DateTime.UtcNow;
 		return await base.Update(model);
 	}
 }

@@ -103,7 +103,7 @@ export class CardFeedItem extends Component {
 
 				<mo-flex gap='12px' ${style({ width: '100%' })}>
 					<mo-flex direction='horizontal' justifyContent='space-between'>
-						<span part='meta'>${new MoDate(this.feedItem.date).since().toString()}</span>
+						<span part='meta'>${this.feedItem.date?.since().toString()}</span>
 						<span part='tag'>${this.subjectTag}</span>
 					</mo-flex>
 

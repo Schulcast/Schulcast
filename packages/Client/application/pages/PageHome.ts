@@ -1,6 +1,6 @@
 
 import { component, css, html, nothing, PageComponent, property, route, style } from '@3mo/model'
-import { API, FeedItem, Slide } from 'sdk'
+import { FeedItem, FeedService, Slide, SlideService } from 'sdk'
 
 @route('/home', '/')
 @component('sc-page-home')
@@ -13,8 +13,8 @@ export class PageHome extends PageComponent {
 		this.fetchSlides()
 	}
 
-	private readonly fetchSlides = async () => this.slides = await API.get('slide') ?? []
-	private readonly fetchFeed = async () => this.feed = await API.get('feed') ?? []
+	private readonly fetchSlides = async () => this.slides = await SlideService.getAll()
+	private readonly fetchFeed = async () => this.feed = await FeedService.getAll()
 
 	static get styles() {
 		return css`
@@ -53,9 +53,9 @@ export class PageHome extends PageComponent {
 
 	private get slideTemplate() {
 		return !this.slides.length ? nothing : html`
-			<lit-slider>
+			<lit-slider ${style({ width: 'calc(100vw - 35px)' })}>
 				${this.slides.map(slide => html`
-					<lit-slide ${style({ width: 'calc(100vw - 21px)', background: `url("/api/files/${slide.id}")` })}>
+					<lit-slide ${style({ background: `url("/api/files/${slide.id}") center center no-repeat` })}>
 						<div>${slide.description}</div>
 					</lit-slide>
 				`)}
