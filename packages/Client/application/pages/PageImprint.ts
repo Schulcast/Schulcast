@@ -40,7 +40,7 @@ export class PageImprint extends PageComponent {
 					040 4289730
 
 					<h2>Mitarbeit & Open-Source Projekte</h2>
-					Entwickelt von <a href='https://github.com/arshia11d'>arshia11d</a> basierend auf <a href='https://github.com/3mo-esolutions/model'>MoDeL</a>-Projekt.
+					Entwickelt von <a href='https://github.com/a11delavar'>a11delavar</a> basierend auf <a href='https://github.com/3mo-esolutions/model'>MoDeL</a>-Projekt.
 					<br />
 					<h2> Urheberrecht, Haftung </h2>
 					Das Layout der Homepage, die verwendeten Grafiken sowie die Sammlung der Beiträge sind urheberrechtlich geschützt. Die Seiten dürfen nur zum privaten Gebrauch vervielfältigt, Änderungen nicht vorgenommen und Vervielfältigungsstücke weder verbreitet noch zur öffentlichen Wiedergabe benutzt werden.
