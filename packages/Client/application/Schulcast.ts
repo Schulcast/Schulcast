@@ -13,7 +13,7 @@ export class Schulcast extends BusinessSuiteApplication {
 			{ label: 'Startseite', icon: 'home', component: new Pages.PageHome() },
 			{ label: 'Team', icon: 'group', component: new Pages.PageTeam() },
 			{ label: 'Impressum', icon: 'info', component: new Pages.PageImprint() },
-			{ label: 'Olympia 2023', icon: 'history_edu', component: new Pages.PageOlympia2023() }
+			{ label: 'Olympiade 2023', icon: 'history_edu', component: new Pages.PageOlympiade2023() }
 		]
 	}
 
