@@ -1,8 +1,8 @@
-import { component, css, html, property, Localizer, ThemeHelper, Color, ApplicationLogo, BusinessSuiteApplication, Navigation, nothing } from '@3mo/model'
+import { component, css, html, property, Localizer, Theme, Color, ApplicationLogo, BusinessSuiteApplication, Navigation, nothing, LanguageCode } from '@3mo/model'
 import * as Pages from './pages'
 
 
-ThemeHelper.accent.value = new Color([204, 14, 0])
+Theme.accent.value = new Color([204, 14, 0, 1])
 Localizer.currentLanguage = LanguageCode.German
 ApplicationLogo.source = '/assets/logo.png'
 

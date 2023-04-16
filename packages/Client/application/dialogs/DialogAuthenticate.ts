@@ -8,7 +8,7 @@ import { MemberService, JwtApiAuthenticator } from 'sdk'
 export class DialogAuthentication extends BusinessSuiteDialogAuthenticator {
 	static get isAuthenticated() { return !!JwtApiAuthenticator.token }
 
-	protected async requestAuthentication() {
+	protected async authenticateAccount() {
 		await MemberService.authenticate(this.username, this.password)
 		return {
 			id: 1,
@@ -17,12 +17,12 @@ export class DialogAuthentication extends BusinessSuiteDialogAuthenticator {
 		}
 	}
 
-	protected requestUnauthentication() {
+	protected unauthenticateAccount() {
 		return Promise.resolve(MemberService.unauthenticate())
 	}
 
-	protected isAuthenticatedServerSide() {
-		return MemberService.isAuthenticated()
+	protected getAuthenticatedAccount() {
+		return MemberService.getAuthenticated()
 	}
 
 	// eslint-disable-next-line require-await

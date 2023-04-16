@@ -8,6 +8,7 @@ public class MemberModule : Module
 	{
 		endpoints.MapGet("/api/member", [AllowAnonymous] (MemberService memberService) => memberService.GetAll());
 		endpoints.MapGet("/api/member/{id}", [AllowAnonymous] (MemberService memberService, int id) => memberService.Get(id));
+		endpoints.MapGet("/api/member/authenticated", [AllowAnonymous] (MemberService memberService) => memberService.GetAuthenticated());
 		endpoints.MapPost("/api/member", [Authorize(Roles = MemberRoles.Admin)] (MemberService memberService, Member member) => memberService.Create(member));
 		endpoints.MapPut("/api/member", [Authorize(Roles = MemberRoles.Admin)] (MemberService memberService, Member member) => memberService.Update(member));
 		endpoints.MapDelete("/api/member/{id}", [Authorize(Roles = MemberRoles.Admin)] (MemberService memberService, int id) => memberService.Delete(id));

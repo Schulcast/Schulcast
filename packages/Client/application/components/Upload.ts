@@ -30,7 +30,7 @@ export class Upload<T = undefined> extends Component {
 
 	upload = async () => {
 		if (this.folder && this.inputElement.value !== '') {
-			const response = await Api.postFile(`/files/${this.folder}`, this.files[0])
+			const response = await Api.post(`/files/${this.folder}`, this.files[0])
 			this.inputElement.value = ''
 			return response as T
 		}

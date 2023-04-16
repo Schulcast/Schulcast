@@ -5,6 +5,10 @@ export class MemberService {
 		return Api.get<Member>(`/member/${id}`)
 	}
 
+	static getAuthenticated() {
+		return Api.get<Member | undefined>(`/member/authenticated`)
+	}
+
 	static getAll() {
 		return Api.get<Array<Member>>(`/member`)
 	}
