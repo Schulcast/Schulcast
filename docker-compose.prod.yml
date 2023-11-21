@@ -14,7 +14,7 @@ services:
 
   schulcast-podcast-manager:
     container_name: schulcast-podcast-manager
-    image: vonproteus/podcast-generator:v3.1.1
+    image: vonproteus/podcast-generator:3.1.1
     restart: always
     volumes:
      - ~/schulcast/podcast:/app/PodcastGenerator/appdata
