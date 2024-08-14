@@ -1,4 +1,3 @@
-version: "3"
 services:
   schulcast:
     container_name: schulcast
