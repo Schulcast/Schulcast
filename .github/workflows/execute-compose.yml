@@ -1,0 +1,32 @@
+name: Docker Compose
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'The docker compose command to execute'
+        required: true
+        type: choice
+        options:
+          - up -d
+          - down
+          - stop
+          - start
+          - restart
+
+jobs:
+  Run:
+    name: ⚡ Run Docker Compose ${{inputs.command}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USERNAME}}
+          password: ${{secrets.SSH_PASSWORD}}
+          port: ${{secrets.SSH_PORT}}
+          script: |
+            cd ./schulcast/.build
+            export COMPOSE_PROJECT_NAME=schulcast
+            export JWT_SECRET=${{secrets.JWT_SECRET}}
+            docker compose -f ./docker-compose.prod.yml ${{inputs.command}}

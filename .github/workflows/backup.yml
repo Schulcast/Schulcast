@@ -1,0 +1,21 @@
+name: Backup
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: '0 0 * * *' # Every day at 00:00 UTC, which is 02:00 CEST
+
+jobs:
+  Run:
+    name: 💾 Backup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{secrets.SSH_USERNAME}}
+          password: ${{secrets.SSH_PASSWORD}}
+          port: ${{secrets.SSH_PORT}}
+          script: |
+            rsync -azvP -e "ssh -p ${{secrets.BACKUP_SERVER_SSH_PORT}}" ~/schulcast/ ${{secrets.BACKUP_SERVER_SSH_USERNAME}}@${{secrets.BACKUP_SERVER_SSH_HOST}}:~/backup-$(date +'%Y-%m-%dT%H_%M_%S')/
+            ssh ${{secrets.BACKUP_SERVER_SSH_USERNAME}}@${{secrets.BACKUP_SERVER_SSH_HOST}} -p ${{secrets.BACKUP_SERVER_SSH_PORT}} 'ls -t | grep backup- | tail -n +31 | xargs rm -f'
