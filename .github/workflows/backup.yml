@@ -17,5 +17,8 @@ jobs:
           password: ${{secrets.SSH_PASSWORD}}
           port: ${{secrets.SSH_PORT}}
           script: |
-            rsync -azvP -e "ssh -p ${{secrets.BACKUP_SERVER_SSH_PORT}}" ~/schulcast/ ${{secrets.BACKUP_SERVER_SSH_USERNAME}}@${{secrets.BACKUP_SERVER_SSH_HOST}}:~/backup-$(date +'%Y-%m-%dT%H_%M_%S')/
-            ssh ${{secrets.BACKUP_SERVER_SSH_USERNAME}}@${{secrets.BACKUP_SERVER_SSH_HOST}} -p ${{secrets.BACKUP_SERVER_SSH_PORT}} 'ls -t | grep backup- | tail -n +31 | xargs rm -f'
+            mkdir ~/schulcast/backup
+            cp -r ~/schulcast/database ~/schulcast/uploads ~/schulcast/podcast ~/schulcast/backup/
+            rsync -azvP -e "ssh -p ${{secrets.BACKUP_SERVER_SSH_PORT}}" ~/schulcast/backup/ ${{secrets.BACKUP_SERVER_SSH_USERNAME}}@${{secrets.BACKUP_SERVER_SSH_HOST}}:~/backup-$(date +'%Y-%m-%dT%H_%M_%S')/
+            rm -r ~/schulcast/backup
+            ssh ${{secrets.BACKUP_SERVER_SSH_USERNAME}}@${{secrets.BACKUP_SERVER_SSH_HOST}} -p ${{secrets.BACKUP_SERVER_SSH_PORT}} 'ls -t | grep backup- | tail -n +31 | xargs rm -rf'
