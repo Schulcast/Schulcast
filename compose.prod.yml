@@ -13,12 +13,12 @@ services:
 
   schulcast-podcast-manager:
     container_name: schulcast-podcast-manager
-    image: vonproteus/podcast-generator:3.1.1
+    image: docker.io/vonproteus/podcast-generator:v.3.1.1
     restart: always
     volumes:
      - ~/schulcast/podcast:/app/PodcastGenerator/appdata
 
 networks:
   default:
-    name: nginx
+    name: internet
     external: true

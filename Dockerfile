@@ -1,8 +1,7 @@
 FROM node:22 as client
 WORKDIR /client
-COPY ./packages/Client/package.json .
-RUN npm install
-COPY ./packages/Client .
+COPY ./packages/Client/ .
+RUN npm ci
 RUN npm run build
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS server

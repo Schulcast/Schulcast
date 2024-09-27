@@ -12,12 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: docker build -f ./Dockerfile.prod --tag schulcast:latest .
-      - run: docker save schulcast:latest -o schulcast_image
-      - uses: actions/upload-artifact@v3
-        with:
-          path: schulcast_image
-          name: schulcast_image
+      - run: docker build -f ./Dockerfile --tag schulcast:latest .
+      - run: docker save schulcast:latest -o schulcast.image
+      - run: |
+          mkdir -p ./artifacts
+          mv schulcast.image ./artifacts/schulcast.image
+          mv compose.prod.yml ./artifacts/compose.yml
+      - uses: up9cloud/action-rsync@v1.4
+        env:
+          SOURCE: ./artifacts/
+          TARGET: ~/schulcast/.build
+          KEY: ${{secrets.SSH_KEY}}
+          HOST: ${{secrets.DEPLOY_SERVER_SSH_HOST}}
+          PORT: ${{secrets.DEPLOY_SERVER_SSH_PORT}}
+          USER: ${{secrets.DEPLOY_SERVER_SSH_USERNAME}}
+          VERBOSE: true
 
   Deploy:
     name: 🚀 Deploy
@@ -25,31 +34,16 @@ jobs:
     needs:
       - Build
     steps:
-        - uses: actions/checkout@v3
-
-        - uses: actions/download-artifact@v3
-          with:
-            name: schulcast_image
-
-        - uses: appleboy/scp-action@v0.1.4
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USERNAME }}
-            key: ${{ secrets.SSH_KEY }}
-            port: ${{ secrets.SSH_PORT }}
-            source: "schulcast_image,docker-compose.prod.yml"
-            target: "~/schulcast/.build"
-            overwrite: true
-
         - uses: appleboy/ssh-action@v0.1.4
           with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USERNAME }}
-            key: ${{ secrets.SSH_KEY }}
-            port: ${{ secrets.SSH_PORT }}
+            key: ${{secrets.SSH_KEY}}
+            host: ${{secrets.DEPLOY_SERVER_SSH_HOST}}
+            port: ${{secrets.DEPLOY_SERVER_SSH_PORT}}
+            username: ${{secrets.DEPLOY_SERVER_SSH_USERNAME}}
             script: |
               cd ./schulcast/.build
-              export JWT_SECRET=${{ secrets.JWT_SECRET }}
+              export JWT_SECRET=${{secrets.JWT_SECRET}}
               export COMPOSE_PROJECT_NAME=schulcast
-              docker load -i ./schulcast_image
-              docker-compose -f ./docker-compose.prod.yml up -d
+              docker load -i ./schulcast.image
+              podman-compose up -d
+              docker exec nginx service nginx reload

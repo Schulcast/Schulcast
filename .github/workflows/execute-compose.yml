@@ -21,12 +21,12 @@ jobs:
     steps:
       - uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{secrets.SSH_HOST}}
-          username: ${{secrets.SSH_USERNAME}}
           key: ${{secrets.SSH_KEY}}
-          port: ${{secrets.SSH_PORT}}
+          host: ${{secrets.DEPLOY_SERVER_SSH_HOST}}
+          username: ${{secrets.DEPLOY_SERVER_SSH_USERNAME}}
+          port: ${{secrets.DEPLOY_SERVER_SSH_PORT}}
           script: |
             cd ./schulcast/.build
             export COMPOSE_PROJECT_NAME=schulcast
             export JWT_SECRET=${{secrets.JWT_SECRET}}
-            docker compose -f ./docker-compose.prod.yml ${{inputs.command}}
+            podman-compose -f ./compose.yml ${{inputs.command}}
