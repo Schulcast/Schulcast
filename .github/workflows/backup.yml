@@ -18,7 +18,7 @@ jobs:
           username: ${{secrets.BACKUP_SERVER_SSH_USERNAME}}
           script: |
             echo "Connected to the backup server"
-            cd ~/backups/schulcast/
+            cd ~/schulcast/
             rsync -azvP -e "ssh -p ${{secrets.DEPLOY_SERVER_SSH_PORT}}" ${{secrets.DEPLOY_SERVER_SSH_USERNAME}}@${{secrets.DEPLOY_SERVER_SSH_HOST}}:~/schulcast/ backup-$(date +'%Y-%m-%dT%H_%M_%S')/
             # Apply retention policy: keep the 30 most recent backups
             ls -t | grep backup- | tail -n +31 | xargs rm -rf
